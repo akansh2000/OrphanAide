@@ -1,6 +1,6 @@
 //inital command to run firebase: npm install firebase
 
-import { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app"; //.
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -14,6 +14,7 @@ import {
 import { getDatabase, ref, set, onValue } from "firebase/database";
 
 const firebaseConfig = {
+  //.
   apiKey: "AIzaSyCjepQRClsAeuzbjyQnkW8mYed1oOFbG-4",
   authDomain: "orphanaide.firebaseapp.com",
   projectId: "orphanaide",
@@ -23,12 +24,13 @@ const firebaseConfig = {
   measurementId: "G-H99B1MH0CT",
 };
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig); //.
 const auth = getAuth();
 const db = getDatabase(app);
 
 //-----------REGISTER--------------
 const registerWithEmailAndPassword = async (email, password) => {
+  //signup
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       console.log("Created");
@@ -70,7 +72,7 @@ function writeUserData(userId, name, email) {
 //----------------READ DATA--------------------------
 function readUserData(userId) {
   console.log("inside read");
-  const databaseRef = ref(db, "users/" + "VldRS5NzmhOs1GlmRpvVhAXz67l2");
+  const databaseRef = ref(db, "users/" + userId);
   onValue(databaseRef, (snapshot) => {
     const data = snapshot.val();
     console.log(data.email);
