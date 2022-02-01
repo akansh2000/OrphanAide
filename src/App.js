@@ -11,6 +11,7 @@ import "./App.css";
 // } from "./Firebase";
 import Login from "./Login";
 import Signup from "./Signup";
+import Dummy from "./Dummy";
 
 function App() {
   // useEffect(
@@ -18,9 +19,7 @@ function App() {
   //   []
   // );
 
-  return (
-    <Signup/>
-    );
+  return <Signup />;
 }
 
 export default App;
