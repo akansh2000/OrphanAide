@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -190,7 +190,7 @@ export default function Signup() {
               <div className="absolute bg-black opacity-60 inset-0 z-0"></div>
             </div>
             <div className="w-full py-6 z-20">
-              <h1 className="my-6 lg:text-7xl ">OrphanAide</h1>
+              <h1 className="my-6 text-7xl lg:text-5xl md:text-base">OrphanAide</h1>
               <form
                 className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto"
                 onSubmit={handleSignup}
@@ -257,6 +257,14 @@ export default function Signup() {
                   >
                     Register
                   </button>
+
+                  <div className="px-4 pb-2 pt-4 text-center text-lg">
+                    <p>Already a customer?
+                    <Link to="/Login">
+                      <span className="text-blue-800 "> Sign Up!</span>
+                      </Link>
+                      </p>
+                  </div>
                 </div>
               </form>
             </div>

@@ -1,17 +1,8 @@
 //import logo from "./logo.svg";
 import "./App.css";
-//import { createUserWithEmailAndPassword } from "firebase/auth";
-//import { useEffect } from "react";
-// import {
-//   loginUser,
-//   readUserData,
-//   registerWithEmailAndPassword,
-//   sendPasswordReset,
-//   writeUserData,
-// } from "./Firebase";
-import Login from "./Login";
-import Signup from "./Signup";
-import Dummy from "./Dummy";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import Login from "./components/Login/Login";
+import Signup from "./components/Signup/Signup";
 
 function App() {
   // useEffect(
@@ -19,7 +10,17 @@ function App() {
   //   []
   // );
 
-  return <Signup />;
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+          <Route exact path="/Login" element={<Login />} />
+          <Route exact path="/Signup" element={<Signup />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;
