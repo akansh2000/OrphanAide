@@ -1,7 +1,13 @@
-import {React, useState} from "react";
+import { React, useState } from "react";
 
 import { initializeApp } from "firebase/app";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 // import Signup from "./components/Signup/Signup";
 import {
   getAuth,
@@ -29,36 +35,37 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase(app);
 
-export default function Login(){
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-
-   const handleLogin=(e)=>{
-
+  const handleLogin = (e) => {
     e.preventDefault();
 
-    if(!validateField(email) || !validateField(password)){
+    if (!validateField(email) || !validateField(password)) {
       window.alert("Please fill all the fields.");
-    }else{
+    } else {
       signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        window.alert("Signed in!");
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        window.alert("Invalid Credentials!")
-      });
-  
-      setEmail('');
-      setPassword('');
+        .then((userCredential) => {
+          window.alert("Signed in!");
+          console.log(auth.currentUser.accessToken);
+          localStorage.setItem("Bearer", auth.currentUser.accessToken);
+          navigate("/Dashboard");
+          const user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          window.alert(errorMessage);
+        });
+
+      setEmail("");
+      setPassword("");
     }
-   }
-   function validateField(field) {
+  };
+  function validateField(field) {
     if (field == null) {
       return false;
     }
@@ -70,8 +77,8 @@ export default function Login(){
     }
   }
 
-    return(
-<>
+  return (
+    <>
       <body>
         <section className="min-h-screen flex items-stretch text-white ">
           <div
@@ -90,7 +97,6 @@ export default function Login(){
                 Capture your personal memory in unique way, anywhere.
               </p>
             </div>
-            
           </div>
           <div
             className="lg:w-1/2 w-full flex items-center justify-center text-center md:px-16 px-0 z-0"
@@ -106,7 +112,7 @@ export default function Login(){
               <div className="absolute bg-black opacity-60 inset-0 z-0"></div>
             </div>
             <div className="w-full py-6 z-20">
-              <h1 className="my-6 text-7xl mb-20" >OrphanAide</h1>
+              <h1 className="my-6 text-7xl mb-20">OrphanAide</h1>
               {/* <div className="py-6 space-x-2">
                 <span className="w-10 h-10 items-center justify-center inline-flex rounded-full font-bold text-lg border-2 border-white">
                   f
@@ -119,8 +125,7 @@ export default function Login(){
                 </span>
               </div> */}
               {/* <p className="text-gray-100">or use email your account</p> */}
-              <form className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto" 
-             >
+              <form className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
                 <div className="pb-2 pt-4">
                   <input
                     type="email"
@@ -147,21 +152,21 @@ export default function Login(){
                   <a href="#">Forgot your password?</a>
                 </div>
                 <div className="px-4 pb-2 pt-4">
-                  <button type ="submit" className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none" 
-                  onClick={handleLogin}>
+                  <button
+                    type="submit"
+                    className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
+                    onClick={handleLogin}
+                  >
                     sign in
                   </button>
                 </div>
                 <Link to="/Signup">
-                <div className="px-4 pb-2 pt-4">
-                  <button className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                  >
-                    Register
-                  </button>
+                  <div className="px-4 pb-2 pt-4">
+                    <button className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
+                      Register
+                    </button>
                   </div>
                 </Link>
-
-
 
                 <div className="p-4 text-center right-0 left-0 flex justify-center space-x-4 mt-16 lg:hidden ">
                   <a href="#">
@@ -199,11 +204,10 @@ export default function Login(){
                   </a>
                 </div>
               </form>
-
             </div>
           </div>
         </section>
       </body>
     </>
-);
+  );
 }
