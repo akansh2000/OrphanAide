@@ -1,7 +1,7 @@
 //import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 import PrivateRoute from "./routes/privateRoute";
 import PublicRoute from "./routes/publicRoute";
@@ -15,10 +15,9 @@ const Signup = lazy(() => import("./components/Signup/Signup"));
 const Dashboard = lazy(() => import("./components/Dummy_dashboard"));
 
 function App() {
-  // useEffect(
-  //   () => registerWithEmailAndPassword("ps827@snu.edu.in", "kuru!@#12"),
-  //   []
-  // );
+  useEffect(() => {
+    localStorage.removeItem("Bearer");
+  }, []);
 
   return (
     <>
@@ -27,6 +26,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Login />} />
             <Route exact path="/Signup" element={<Signup />} />
+            <Route exact path="/Login" element={<Login />} />
             <Route exact path="/Dashboard" element={<PrivateRoute />}>
               <Route exact path="/Dashboard" element={<Dashboard />} />
             </Route>

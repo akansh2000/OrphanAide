@@ -1,32 +1,6 @@
 import { React, useState } from "react";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
-import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
-import {
-  signInWithEmailAndPassword,
-  signOut,
-  sendSignInLinkToEmail,
-  updateProfile,
-} from "firebase/auth";
-import { getDatabase, ref, set, onValue } from "firebase/database";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCjepQRClsAeuzbjyQnkW8mYed1oOFbG-4",
-  authDomain: "orphanaide.firebaseapp.com",
-  projectId: "orphanaide",
-  storageBucket: "orphanaide.appspot.com",
-  messagingSenderId: "42815706163",
-  appId: "1:42815706163:web:e539dab75415ba72cbff46",
-  measurementId: "G-H99B1MH0CT",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getDatabase(app);
+import { Link, useNavigate} from "react-router-dom";
+import { HandleSignupFirebase } from "../../Firebase";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -34,130 +8,27 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeat, setRepeat] = useState("");
-  let flag = true;
+  const navigate = useNavigate();
 
   const handleSignup = (e) => {
-    if (!validatePhone(phone)) {
-      window.alert("Phone number must contain 10 digits!");
-      flag = false;
-    }
-
-    if (!validateEmail(email)) {
-      window.alert("Enter a valid email address!");
-      flag = false;
-    }
-
-    if (!validatePassword(password)) {
-      window.alert(
-        "Password must contain at least a symbol, an uppercase, a lower case letter and a number!"
-      );
-      flag = false;
-    }
-
-    if (password !== repeat) {
-      window.alert("Both passwords must be same!");
-      flag = false;
-    }
-
     e.preventDefault();
-    if (flag) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          window.alert("User Created");
-          const user = userCredential.user;
-          writeUserData(user.uid, name, email, phone);
-          const currentUser = auth.currentUser;
-          updateProfile(auth.currentUser, {
-            displayName: name,
-          })
-            .then(() => {
-              // Update successful
-              // ...
-              // sendEmailVerification()
-              //       .then(function () {
-              //         window.alert("Verification has been sent to your email!");
-              //       })
-              //       .catch(function (error) {
-              //         console.log(error);
-              //         window.alert("There was some error in sending the verification email!");
-              //       });
-            })
-            .catch((error) => {
-              const errorCode = error.code;
-              const errorMessage = error.message;
-              window.alert(errorMessage);
-            });
-          emptyField();
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          window.alert(errorMessage);
-        });
-    }
+    HandleSignupFirebase(navigate,email,password,name,phone,repeat);
+    // const signString = localStorage.getItem("SignedIn");
+    // if(signString.length === 4){
+    //   emptyField();
+    // }
   };
 
-  function emptyField() {
-    setName("");
-    setPhone("");
-    setEmail("");
-    setPassword("");
-    setRepeat("");
-  }
-  function writeUserData(userId, name, email, phone) {
-    console.log("inside write");
-    set(ref(db, "users/" + userId), {
-      name: name,
-      email: email,
-      phone: phone,
-    }).catch((error) => {
-      window.alert(error.message);
-    });
-  }
-
-  function validateEmail(email) {
-    let expression = /^[^@]+@\w+(\.\w+)+\w$/;
-    if (expression.test(email) == true) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  function validatePassword(password) {
-    //min 6 letter password, with at least a symbol, upper and lower case letters and a number
-    let expression = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-
-    if (expression.test(password) == false) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  function validateField(field) {
-    if (field == null) {
-      return false;
-    }
-
-    if (field.length <= 0) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  function validatePhone(mobileNumber) {
-    if (mobileNumber.length == 10) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // function emptyField() {
+  //   setName("");
+  //   setPhone("");
+  //   setEmail("");
+  //   setPassword("");
+  //   setRepeat("");
+  // }
 
   return (
     <>
-      <body>
         <section className="min-h-screen flex items-stretch text-white ">
           <div
             className="lg:flex w-1/2 hidden bg-gray-500 bg-no-repeat bg-cover relative items-center"
@@ -260,7 +131,7 @@ export default function Signup() {
 
                   <div className="px-4 pb-2 pt-4 text-center text-lg">
                     <p>Already a customer?
-                    <Link to="/Login">
+                    <Link to="../Login">
                       <span className="text-blue-800 "> Sign Up!</span>
                       </Link>
                       </p>
@@ -270,7 +141,6 @@ export default function Signup() {
             </div>
           </div>
         </section>
-      </body>
     </>
   );
 }
