@@ -1,0 +1,2 @@
+Loader on sign in and sign up
+Email verification
