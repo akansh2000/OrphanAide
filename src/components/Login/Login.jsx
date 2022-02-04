@@ -1,29 +1,28 @@
 import { React, useState } from "react";
 
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { HandleLoginFirebase } from "../../Firebase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loaded, setLoaded] = useState(true);
+
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    HandleLoginFirebase(navigate,email,password);
+    setLoaded(false);
 
-      setEmail("");
-      setPassword("");
-   
+    HandleLoginFirebase(navigate, email, password);
+
+    setEmail("");
+    setPassword("");
   };
 
   return (
-    
     <>
       <section className="min-h-screen flex items-stretch text-white ">
         <div
@@ -85,13 +84,27 @@ export default function Login() {
                 <a href="#">Forgot your password?</a>
               </div>
               <div className="px-4 pb-2 pt-4">
-                <button
-                  type="submit"
-                  className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                  onClick={handleLogin}
-                >
-                  Sign In
-                </button>
+                {loaded ? (
+                  <button
+                    type="submit"
+                    className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
+                    onClick={handleLogin}
+                  >
+                    Sign In
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
+                  >
+                    <div className="text-center mx-auto">
+                      <div
+                        style={{ borderTopColor: "transparent" }}
+                        className="w-8 h-8 border-4 border-black-400 border-dotted rounded-full animate-spin text-center mx-auto"
+                      ></div>
+                    </div>
+                  </button>
+                )}
               </div>
               <Link to="/Signup">
                 <div className="px-4 pb-2 pt-4">

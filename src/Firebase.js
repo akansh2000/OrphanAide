@@ -137,7 +137,7 @@ const HandleLoginFirebase = (navigate, email, password) => {
   } else {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        window.alert("Signed in!");
+        // window.alert("Signed in!");
         console.log(auth.currentUser.accessToken);
 
         set(ref(db, "token/" + auth.currentUser.uid), {
