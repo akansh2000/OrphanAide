@@ -1,3 +1,4 @@
 npm i
 npm install firebase
 npm install -D tailwindcss postcss autoprefixer
+Even after "npm i" it shows Module not found : @headlessui/react ->  npm i @headlessui/react
