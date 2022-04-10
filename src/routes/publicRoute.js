@@ -1,4 +1,5 @@
 import { Route, Navigate } from "react-router-dom";
+import Home from "../components/HomePage/Home";
 
 const PublicRoute = ({ children, ...rest }) => {
   const token = localStorage.getItem("Bearer");
@@ -20,11 +21,7 @@ const PublicRoute = ({ children, ...rest }) => {
     // />
 
     !token ? (
-      <Navigate
-        to={{
-          pathname: "/",
-        }}
-      />
+      <Home />
     ) : (
       <Navigate
         to={{

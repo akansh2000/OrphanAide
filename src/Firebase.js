@@ -18,6 +18,7 @@ import {
   listAll,
 } from "firebase/storage";
 import { getDatabase, ref, set, onValue } from "firebase/database";
+import Orphanages from "./components/Orphanages";
 // import { useNavigate } from "react-router-dom";
 
 const firebaseConfig = {
@@ -426,7 +427,7 @@ const Logout = (navigate) => {
 
   signOut(auth);
   //localStorage.removeItem("Bearer");
-  navigate("../Login");
+  navigate("../");
 };
 
 const FetchToken = () => {
@@ -443,6 +444,17 @@ const FetchToken = () => {
     localStorage.removeItem("Bearer");
   }
 };
+
+// const fetchOrphanages = () => {
+//   const databaseRef = ref(db, "orphanage/");
+//   onValue(databaseRef, (snapshot) => {
+//     let orphanagelist = {};
+//     const data = snapshot.val();
+//     orphanagelist = data;
+//     console.log(orphanagelist);
+//     <Orphanages list={orphanagelist} />;
+//   });
+// };
 
 export {
   HandleSignupFirebase,
