@@ -1,28 +1,19 @@
-
 import { React, useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
-// import { update } from "../../automation";
+import { useNavigate } from "react-router-dom";
 
-import { HandleLoginFirebase, writeNewsData } from "../../Firebase";
+import { sentForgetPasswordEmail } from "../../Firebase";
 
-export default function Login() {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loaded, setLoaded] = useState(true);
+  const [loaded] = useState(true);
 
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleForgotPassword = (e) => {
     e.preventDefault();
-    setLoaded(false);
-    let desc = "This year's first cyclone is set to develop in the Bay of Bengal around March 21, as per India Meteorological Department. 'We are monitoring the situation and everyday it will be updated', said Dr M Mohapatra, DGM, IMD to Mirror Now."
-    writeNewsData("Cyclone Asani: First cyclone of 2022 is set to develop in Bay of Bengal around March 21",desc,"Andhra Pradesh","False");
-    // update();
-    HandleLoginFirebase(navigate, email, password);
-
+    sentForgetPasswordEmail(navigate, email);
     setEmail("");
-    setPassword("");
   };
 
   return (
@@ -68,11 +59,19 @@ export default function Login() {
           </div>
           <div className="w-full py-6 z-20">
             <h1
-              className="my-6 text-7xl mb-20"
+              className="my-6 text-7xl mb-10"
               style={{ fontFamily: "'Dancing Script', cursive" }}
             >
               OrphanAide
             </h1>
+
+            <h3
+              className="my-6 text-2xl mb-5"
+              style={{ fontFamily: "'Dancing Script', cursive" }}
+            >
+              Forgot Password
+            </h3>
+
             <form className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
               <div className="pb-2 pt-4">
                 <input
@@ -85,28 +84,15 @@ export default function Login() {
                   onChange={(event) => setEmail(event.target.value)}
                 />
               </div>
-              <div className="pb-2 pt-4">
-                <input
-                  className="block w-full p-4 text-lg rounded-sm bg-black"
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-              </div>
-              <div className="text-right text-gray-400 hover:underline hover:text-gray-100 mt-5 mb-16">
-                <a href="/ForgotPassword">Forgot your password?</a>
-              </div>
+
               <div className="px-4 pb-2 pt-4">
                 {loaded ? (
                   <button
                     type="submit"
                     className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                    onClick={handleLogin}
+                    onClick={handleForgotPassword}
                   >
-                    Sign In
+                    Send Mail
                   </button>
                 ) : (
                   <button
@@ -122,13 +108,6 @@ export default function Login() {
                   </button>
                 )}
               </div>
-              <Link to="/SpecificOrphanage">
-                <div className="px-4 pb-2 pt-4">
-                  <button className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
-                    Register
-                  </button>
-                </div>
-              </Link>
             </form>
           </div>
         </div>
