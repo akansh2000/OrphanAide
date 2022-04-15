@@ -13,6 +13,7 @@ import Loader from "./Loader";
 const Login = lazy(() => import("./components/Login/Login"));
 const Signup = lazy(() => import("./components/Signup/Signup"));
 const Dashboard = lazy(() => import("./components/Dummy_dashboard"));
+const SignupOrphanage = lazy(() => import("./components/Signup/SignupOrphanage.jsx"));
 
 function App() {
   useEffect(() => {
@@ -26,6 +27,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Login />} />
             <Route exact path="/Signup" element={<Signup />} />
+            <Route exact path="/SignupOrphanage" element={<SignupOrphanage />} />
             <Route exact path="/Login" element={<Login />} />
             <Route exact path="/Dashboard" element={<PrivateRoute />}>
               <Route exact path="/Dashboard" element={<Dashboard />} />

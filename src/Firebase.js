@@ -90,6 +90,59 @@ const HandleSignupFirebase = (
   }
 };
 
+const HandleOrphanageSignupFirebase = (
+  navigate,
+  email,
+  password,
+  name,
+  address,
+  orpstate,
+  phone,
+  repeat
+) => {
+  let flag = true;
+  // localStorage.setItem("SignedIn", "");
+
+  if (!validatePhone(phone)) {
+    window.alert("Phone number must contain 10 digits!");
+    flag = false;
+  }
+
+  if (!validateEmail(email)) {
+    window.alert("Enter a valid email address!");
+    flag = false;
+  }
+
+  if (!validatePassword(password)) {
+    window.alert(
+      "Password must contain at least a symbol, an uppercase, a lower case letter and a number!"
+    );
+    flag = false;
+  }
+
+  if (password !== repeat) {
+    window.alert("Both passwords must be same!");
+    flag = false;
+  }
+
+  if (flag) {
+        writeOrphanageData(address, orpstate, name, email, phone);
+        // const currentUser = auth.currentUser;
+        // updateProfile(currentUser, {
+        //   displayName: name,
+        // })
+        //   .then(() => {
+        //     // localStorage.setItem("SignedIn", flag);
+        //     navigate("../Login");
+        //     //send email verification
+        //   })
+        //   .catch((error) => {
+        //     const errorMessage = error.message;
+        //     window.alert(errorMessage);
+        //   });
+  }
+};
+
 function writeUserData(userId, name, email, phone) {
   console.log("inside write");
   set(ref(db, "users/" + userId), {
@@ -99,6 +152,24 @@ function writeUserData(userId, name, email, phone) {
   }).catch((error) => {
     window.alert(error.message);
   });
+}
+
+function writeOrphanageData(address, orpstate, name, email, phone) {
+  console.log("inside write");
+  var check = true;
+  set(ref(db, "review/" + address + "_" + orpstate), {
+    name: name,
+    email: email,
+    phone: phone,
+    address: address,
+    state: orpstate
+  }).catch((error) => {
+    check = false;
+    window.alert(error.message);
+  });
+  if(check){
+    window.alert('Request sent successfully!');
+  }
 }
 
 function validateEmail(email) {
@@ -251,6 +322,7 @@ const FetchToken = () => {
 export {
   HandleSignupFirebase,
   HandleLoginFirebase,
+  HandleOrphanageSignupFirebase,
   writeUserData,
   readUserData,
   sendPasswordReset,
