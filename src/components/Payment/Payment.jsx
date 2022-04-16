@@ -1,11 +1,13 @@
 import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { donationToOrphanage } from "../../Firebase";
+
 // import "../";
 // import "./styles/tailwind-pre-build.css";
 const stripePromise = loadStripe("pk_test_51KmMwwSIFcN2pZvQ1v7L1NwYFuUtKFVmpZvIEAXPy2ehjeXVMBPxKmeBuMEjoxTXgvR8sKpVrFdlYBhT1OjExN2600oR1fj3AL");
 const DonationButton = ({ itemID, amount }) => {
   const handleClick = async (event) => {
+    localStorage.setItem("amount",parseInt(amount));
+    amount = parseInt(amount);
     const stripe = await stripePromise;
     stripe
       .redirectToCheckout({
@@ -16,8 +18,7 @@ const DonationButton = ({ itemID, amount }) => {
         submitType: "donate",
       })
       .then(function (result) {
-          donationToOrphanage(amount);  
-          window.alert("Your donation of "+amount+" has been made!");
+          
         if (result.error) {
           console.log(result);
         }
@@ -47,7 +48,7 @@ export default function Payment() {
             <div class="p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
             <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">₹10.00</h1>
             <DonationButton  class="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded"
-            amount={"10.00"}
+            amount={10}
             itemID="price_1KmcafSIFcN2pZvQAz3wzDio"
             ></DonationButton>
             </div>
@@ -56,7 +57,7 @@ export default function Payment() {
             <div class="p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
             <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">₹50.00</h1>
             <DonationButton
-            amount={"50.00"}
+            amount={50}
             itemID="price_1KmbfrSIFcN2pZvQ4gJSqVwe"
             ></DonationButton>
             </div>
@@ -65,7 +66,7 @@ export default function Payment() {
             <div class="p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
             <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">₹100.00</h1>
             <DonationButton
-            amount={"100.00"}
+            amount={100}
             itemID="price_1KmcbqSIFcN2pZvQlD7j7iqF"
             ></DonationButton>
             </div>
@@ -74,7 +75,7 @@ export default function Payment() {
             <div class="p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
             <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">₹500.00</h1>
             <DonationButton
-            amount={"500.00"}
+            amount={500}
             itemID="price_1Kmcc6SIFcN2pZvQZZ66YqKq"
             ></DonationButton>
             </div>
@@ -83,7 +84,7 @@ export default function Payment() {
             <div class="p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
             <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">₹1000.00</h1>
             <DonationButton
-            amount={"1000.00"}
+            amount={1000}
             itemID="price_1KmccOSIFcN2pZvQuMNTAEoY"
             ></DonationButton>
             </div>
@@ -92,7 +93,7 @@ export default function Payment() {
             <div class="p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
             <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">₹2000.00</h1>
             <DonationButton
-            amount={"2000.00"}
+            amount={2000}
             itemID="price_1KmcchSIFcN2pZvQJoYfsXiH"
             ></DonationButton>
             </div>
@@ -101,7 +102,7 @@ export default function Payment() {
             <div class="p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
             <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">₹5000.00</h1>
             <DonationButton
-        amount={"5000.00"}
+        amount={5000}
         itemID="price_1Kmcd7SIFcN2pZvQvkwAmgTC"
         ></DonationButton>
             </div>
@@ -110,7 +111,7 @@ export default function Payment() {
             <div class="p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
             <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">₹10000.00</h1>
             <DonationButton  class="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded"
-            amount={"10000.00"}
+            amount={10000}
             itemID="price_1KmcdWSIFcN2pZvQlMPD7xhH"
             ></DonationButton>
             </div>

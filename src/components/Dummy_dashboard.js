@@ -65,7 +65,7 @@ export default function Dummy_dashboard() {
                   </a>
 
                   <a
-                    href="#"
+                    href="/Payment"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
@@ -73,7 +73,7 @@ export default function Dummy_dashboard() {
                   </a>
 
                   <a
-                    href="#"
+                    href="/Payment"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
@@ -81,7 +81,7 @@ export default function Dummy_dashboard() {
                   </a>
 
                   <a
-                    href="#"
+                    href="/SpecificOrphanage"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
@@ -182,7 +182,7 @@ export default function Dummy_dashboard() {
                 </a>
 
                 <a
-                  href="#"
+                  href="/SpecificOrphanage"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                   style={{ fontSize: "15px", letterSpacing: "3px" }}
                 >
@@ -240,56 +240,9 @@ export default function Dummy_dashboard() {
                 className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
               >
                 <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
-                  <i className="bx bx-drink"></i>
-                </span>
-                <span className="text-sm font-medium">Drink</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
-              >
-                <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
-                  <i className="bx bx-shopping-bag"></i>
-                </span>
-                <span className="text-sm font-medium">Shopping</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
-              >
-                <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
-                  <i className="bx bx-chat"></i>
-                </span>
-                <span className="text-sm font-medium">Chat</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
-              >
-                <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
                   <i className="bx bx-user"></i>
                 </span>
                 <span className="text-sm font-medium">Profile</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
-              >
-                <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
-                  <i className="bx bx-bell"></i>
-                </span>
-                <span className="text-sm font-medium">Notifications</span>
-                <span className="ml-auto mr-6 text-sm bg-red-100 rounded-full px-3 py-px text-red-500">
-                  5
-                </span>
               </a>
             </li>
             <li>
@@ -305,7 +258,161 @@ export default function Dummy_dashboard() {
             </li>
           </ul>
         </div>
-        {/* <div> <Orphanages /></div> */}
+        <div>
+          <section className="text-gray-600 body-font">
+            <div className="container px-5 py-24 mx-auto">
+              <div className="flex flex-wrap -m-4">
+                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                  <a className="block relative h-48 rounded overflow-hidden">
+                    <img
+                      alt="ecommerce"
+                      className="object-cover object-center w-full h-full block"
+                      src="https://dummyimage.com/420x260"
+                    />
+                  </a>
+                  <div className="mt-4">
+                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                      CATEGORY
+                    </h3>
+                    <h2 className="text-gray-900 title-font text-lg font-medium">
+                      The Catalyzer
+                    </h2>
+                    <p className="mt-1">$16.00</p>
+                  </div>
+                </div>
+                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                  <a className="block relative h-48 rounded overflow-hidden">
+                    <img
+                      alt="ecommerce"
+                      className="object-cover object-center w-full h-full block"
+                      src="https://dummyimage.com/421x261"
+                    />
+                  </a>
+                  <div className="mt-4">
+                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                      CATEGORY
+                    </h3>
+                    <h2 className="text-gray-900 title-font text-lg font-medium">
+                      Shooting Stars
+                    </h2>
+                    <p className="mt-1">$21.15</p>
+                  </div>
+                </div>
+                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                  <a className="block relative h-48 rounded overflow-hidden">
+                    <img
+                      alt="ecommerce"
+                      className="object-cover object-center w-full h-full block"
+                      src="https://dummyimage.com/422x262"
+                    />
+                  </a>
+                  <div className="mt-4">
+                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                      CATEGORY
+                    </h3>
+                    <h2 className="text-gray-900 title-font text-lg font-medium">
+                      Neptune
+                    </h2>
+                    <p className="mt-1">$12.00</p>
+                  </div>
+                </div>
+                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                  <a className="block relative h-48 rounded overflow-hidden">
+                    <img
+                      alt="ecommerce"
+                      className="object-cover object-center w-full h-full block"
+                      src="https://dummyimage.com/423x263"
+                    />
+                  </a>
+                  <div className="mt-4">
+                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                      CATEGORY
+                    </h3>
+                    <h2 className="text-gray-900 title-font text-lg font-medium">
+                      The 400 Blows
+                    </h2>
+                    <p className="mt-1">$18.40</p>
+                  </div>
+                </div>
+                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                  <a className="block relative h-48 rounded overflow-hidden">
+                    <img
+                      alt="ecommerce"
+                      className="object-cover object-center w-full h-full block"
+                      src="https://dummyimage.com/424x264"
+                    />
+                  </a>
+                  <div className="mt-4">
+                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                      CATEGORY
+                    </h3>
+                    <h2 className="text-gray-900 title-font text-lg font-medium">
+                      The Catalyzer
+                    </h2>
+                    <p className="mt-1">$16.00</p>
+                  </div>
+                </div>
+                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                  <a className="block relative h-48 rounded overflow-hidden">
+                    <img
+                      alt="ecommerce"
+                      className="object-cover object-center w-full h-full block"
+                      src="https://dummyimage.com/425x265"
+                    />
+                  </a>
+                  <div className="mt-4">
+                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                      CATEGORY
+                    </h3>
+                    <h2 className="text-gray-900 title-font text-lg font-medium">
+                      Shooting Stars
+                    </h2>
+                    <p className="mt-1">$21.15</p>
+                  </div>
+                </div>
+                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                  <a className="block relative h-48 rounded overflow-hidden">
+                    <img
+                      alt="ecommerce"
+                      className="object-cover object-center w-full h-full block"
+                      src="https://dummyimage.com/427x267"
+                    />
+                  </a>
+                  <div className="mt-4">
+                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                      CATEGORY
+                    </h3>
+                    <h2 className="text-gray-900 title-font text-lg font-medium">
+                      Neptune
+                    </h2>
+                    <p className="mt-1">$12.00</p>
+                  </div>
+                </div>
+                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                  <a
+                    className="block relative h-48 rounded overflow-hidden"
+                    href=""
+                  >
+                    <img
+                      alt="ecommerce"
+                      className="object-cover object-center w-full h-full block"
+                      src="https://dummyimage.com/428x268"
+                    />
+                  </a>
+                  <div className="mt-4">
+                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                      CATEGORY
+                    </h3>
+                    <h2 className="text-gray-900 title-font text-lg font-medium">
+                      The 400 Blows
+                    </h2>
+                    <p className="mt-1">$18.40</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </>
   );

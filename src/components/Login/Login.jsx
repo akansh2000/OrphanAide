@@ -122,7 +122,7 @@ export default function Login() {
                   </button>
                 )}
               </div>
-              <Link to="/SpecificOrphanage">
+              <Link to="/Signup">
                 <div className="px-4 pb-2 pt-4">
                   <button className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
                     Register

@@ -4,8 +4,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
-} from "firebase/auth";
-import {
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -18,7 +17,7 @@ import {
   listAll,
 } from "firebase/storage";
 import { getDatabase, ref, set, onValue } from "firebase/database";
-import Orphanages from "./components/Orphanages";
+// import Orphanages from "./components/Orphanags";
 // import { useNavigate } from "react-router-dom";
 
 const firebaseConfig = {
@@ -113,7 +112,6 @@ const HandleOrphanageSignupFirebase = (
   repeat
 ) => {
   let flag = true;
-  // localStorage.setItem("SignedIn", "");
 
   if (!validatePhone(phone)) {
     window.alert("Phone number must contain 10 digits!");
@@ -138,20 +136,7 @@ const HandleOrphanageSignupFirebase = (
   }
 
   if (flag) {
-        writeOrphanageData(address, orpstate, name, email, phone);
-        // const currentUser = auth.currentUser;
-        // updateProfile(currentUser, {
-        //   displayName: name,
-        // })
-        //   .then(() => {
-        //     // localStorage.setItem("SignedIn", flag);
-        //     navigate("../Login");
-        //     //send email verification
-        //   })
-        //   .catch((error) => {
-        //     const errorMessage = error.message;
-        //     window.alert(errorMessage);
-        //   });
+    writeReviewData(address, orpstate, name, email, phone);
   }
 };
 
@@ -161,13 +146,13 @@ function writeUserData(userId, name, email, phone) {
     name: name,
     email: email,
     phone: phone,
+    donation: 0,
   }).catch((error) => {
     window.alert(error.message);
   });
 }
 
-<<<<<<< HEAD
-function writeOrphanageData(address, orpstate, name, email, phone) {
+function writeReviewData(address, orpstate, name, email, phone) {
   console.log("inside write");
   var check = true;
   set(ref(db, "review/" + address + "_" + orpstate), {
@@ -175,15 +160,16 @@ function writeOrphanageData(address, orpstate, name, email, phone) {
     email: email,
     phone: phone,
     address: address,
-    state: orpstate
+    state: orpstate,
   }).catch((error) => {
     check = false;
     window.alert(error.message);
   });
-  if(check){
-    window.alert('Request sent successfully!');
+  if (check) {
+    window.alert("Request sent successfully!");
   }
-=======
+}
+
 function writeOrphanageData(obj, i) {
   console.log("inside write");
   set(ref(db, "orphanage/" + i), obj).catch((error) => {
@@ -219,28 +205,98 @@ function writeNewsData(title, desc, state, status) {
   });
 }
 
-function waitThenMove() {
+function waitThenMove(navigate) {
   setTimeout(function () {
+    navigate("/Dashboard");
     console.log("REDIRECT TO DASHBOARD");
   }, 5000);
 }
 
-function donationToOrphanage() {
-  const reference = ref(db, "orphanage/");
-  onValue(reference, (snapshot) => {
-    const data = snapshot.val();
-    console.log(data);
-    let val = data.find(
-      (c) => c.name === localStorage.getItem("Orphanange Name")
-    );
+function donationToOrphanage(amount) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid;
+      console.log("uid" + uid);
 
-    let donation = val.donation;
+      const reference = ref(db, "users/" + uid);
+      let i = 0;
 
-    window.alert(donation);
+      onValue(reference, (snapshot) => {
+        const data = snapshot.val();
+        console.log(i);
+        i++;
+        if (i === 1) {
+          console.log(data);
+          console.log(data.donation);
+          data.donation += parseInt(amount);
+          set(ref(db, "users/" + uid), data).catch((error) => {
+            window.alert(error.message);
+          });
+        }
+      });
 
-    const storage = getStorage();
-    const pathReference = sRef(storage, val.name);
-    console.log(pathReference);
+      const refDon = ref(db, "donations/" + uid);
+      let k = 0;
+      let name = localStorage.getItem("Orphanage Name");
+
+      onValue(refDon, (snapshot) => {
+        let donationsArr = [];
+        let data = snapshot.val();
+        k++;
+        if (k === 1) {
+          if (data == null) {
+            let obj = {
+              amount: amount,
+              time: new Date().getTime(),
+              orphanage: name,
+            };
+
+            set(ref(db, "donations/" + uid + "/" + 1), obj).catch((error) => {
+              window.alert(error.message);
+            });
+          } else {
+            console.log(data);
+            var keys = Object.keys(data);
+            keys.forEach(function (key) {
+              donationsArr.push(data[key]);
+            });
+
+            let obj = {
+              amount: amount,
+              time: new Date().getTime(),
+              orphanage: localStorage.getItem("Orphanage Name"),
+            };
+
+            console.log(obj);
+            console.log(donationsArr);
+            let donationsArrLen = donationsArr.length + 1;
+            set(ref(db, "donations/" + uid + "/" + donationsArrLen), obj).catch(
+              (error) => {
+                window.alert(error.message);
+              }
+            );
+          }
+        }
+      });
+
+      const reft = ref(db, "orphanage/");
+      let j = 0;
+
+      onValue(reft, (snapshot) => {
+        const data = snapshot.val();
+        let val = data.find((c) => c.name === name);
+        let idx = data.indexOf(val);
+        console.log(val);
+        console.log(data);
+        j++;
+        if (j === 1) {
+          val.donation += parseInt(amount);
+          set(ref(db, "orphanage/" + idx), val).catch((error) => {
+            window.alert(error.message);
+          });
+        }
+      });
+    }
   });
 }
 
@@ -363,7 +419,6 @@ function loadOrphanageTitle(name) {
       })
       .catch((error) => {});
   });
->>>>>>> b2b83d75d566d2a5e93badbc23272e1a91756fc6
 }
 
 function validateEmail(email) {
@@ -400,14 +455,13 @@ const HandleLoginFirebase = (navigate, email, password) => {
   if (!validateField(email) || !validateField(password)) {
     window.alert("Please fill all the fields.");
   } else {
-    if (!auth.currentUser.emailVerified) {
-      window.alert("Verify your email!");
-    } else {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // window.alert("Signed in!");
-          console.log(auth.currentUser.accessToken);
-
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // window.alert("Signed in!");
+        console.log(auth.currentUser.accessToken);
+        if (!auth.currentUser.emailVerified) {
+          window.alert("Verify your email!");
+        } else {
           set(ref(db, "token/" + auth.currentUser.uid), {
             token: auth.currentUser.accessToken,
           }).catch((error) => {
@@ -416,13 +470,13 @@ const HandleLoginFirebase = (navigate, email, password) => {
 
           //localStorage.setItem("Bearer", auth.currentUser.accessToken);
           navigate("/Dashboard");
-          // ...
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          window.alert(errorMessage);
-        });
-    }
+        }
+        // ...
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        window.alert(errorMessage);
+      });
   }
 };
 
@@ -503,18 +557,20 @@ const Logout = (navigate) => {
 };
 
 const FetchToken = () => {
-  if (auth.currentUser != null) {
-    console.log(auth.currentUser.uid);
-    const databaseRef = ref(db, "token/" + auth.currentUser.uid);
-    onValue(databaseRef, (snapshot) => {
-      const data = snapshot.val();
-      console.log("Welcome to fetchtoken");
-      localStorage.setItem("Bearer", data.token);
-    });
-  } else {
-    console.log("Inside else");
-    localStorage.removeItem("Bearer");
-  }
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log(user.uid);
+      const databaseRef = ref(db, "token/" + user.uid);
+      onValue(databaseRef, (snapshot) => {
+        const data = snapshot.val();
+        console.log("Welcome to fetchtoken");
+        localStorage.setItem("Bearer", data.token);
+      });
+    } else {
+      console.log("Inside else");
+      localStorage.removeItem("Bearer");
+    }
+  });
 };
 
 // const fetchOrphanages = () => {
@@ -544,4 +600,5 @@ export {
   loadNewsData,
   waitThenMove,
   donationToOrphanage,
+  writeReviewData,
 };
