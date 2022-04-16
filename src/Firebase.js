@@ -450,9 +450,7 @@ const FetchToken = () => {
 //   onValue(databaseRef, (snapshot) => {
 //     let orphanagelist = {};
 //     const data = snapshot.val();
-//     orphanagelist = data;
-//     console.log(orphanagelist);
-//     <Orphanages list={orphanagelist} />;
+//     return data;
 //   });
 // };
 

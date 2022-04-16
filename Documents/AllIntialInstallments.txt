@@ -1,6 +1,6 @@
 npm i
 npm install firebase
 npm install -D tailwindcss postcss autoprefixer
-npm i axios
 npm install @stripe/react-stripe-js @stripe/stripe-js
 Even after "npm i" it shows Module not found : @headlessui/react ->  npm i @headlessui/react
+Rectify spinner on alert
