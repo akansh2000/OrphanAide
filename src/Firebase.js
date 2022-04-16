@@ -328,14 +328,13 @@ const HandleLoginFirebase = (navigate, email, password) => {
   if (!validateField(email) || !validateField(password)) {
     window.alert("Please fill all the fields.");
   } else {
-    if (!auth.currentUser.emailVerified) {
-      window.alert("Verify your email!");
-    } else {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // window.alert("Signed in!");
-          console.log(auth.currentUser.accessToken);
-
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // window.alert("Signed in!");
+        console.log(auth.currentUser.accessToken);
+        if (!auth.currentUser.emailVerified) {
+          window.alert("Verify your email!");
+        } else {
           set(ref(db, "token/" + auth.currentUser.uid), {
             token: auth.currentUser.accessToken,
           }).catch((error) => {
@@ -344,13 +343,13 @@ const HandleLoginFirebase = (navigate, email, password) => {
 
           //localStorage.setItem("Bearer", auth.currentUser.accessToken);
           navigate("/Dashboard");
-          // ...
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          window.alert(errorMessage);
-        });
-    }
+        }
+        // ...
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        window.alert(errorMessage);
+      });
   }
 };
 

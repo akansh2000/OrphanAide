@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
 
 import PrivateRoute from "./routes/privateRoute";
-// import PublicRoute from "./routes/publicRoute";
+import PublicRoute from "./routes/publicRoute";
 import Loader from "./Loader";
 import Home from "./components/HomePage/Home";
 import Mission from "./components/HomePage/Mission";
