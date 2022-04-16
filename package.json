@@ -4,6 +4,10 @@
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.5.0",
+<<<<<<< HEAD
+=======
+    "@heroicons/react": "^1.0.6",
+>>>>>>> 2ebb9d9e3732ed51557f5ff98cb2a7aa7391004c
     "@stripe/react-stripe-js": "^1.7.1",
     "@stripe/stripe-js": "^1.27.0",
     "@testing-library/jest-dom": "^5.16.1",

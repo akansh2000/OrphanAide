@@ -23,6 +23,7 @@ const ForgotPassword = lazy(() =>
   import("./components/ForgotPassword/ForgotPassword")
 );
 const Dashboard = lazy(() => import("./components/Dummy_dashboard"));
+const SignupOrphanage = lazy(() => import("./components/Signup/SignupOrphanage.jsx"));
 
 function App() {
   // useEffect(() => {
@@ -39,6 +40,7 @@ function App() {
             </Route>
             {/* <Route exact path="/" element={<Login />} /> */}
             <Route exact path="/Signup" element={<Signup />} />
+            <Route exact path="/SignupOrphanage" element={<SignupOrphanage />} />
             <Route exact path="/Thank" element={<Thank />} />
             <Route exact path="/Payment" element={<Payment />} />
             <Route exact path="/Login" element={<Login />} />
