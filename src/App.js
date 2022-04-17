@@ -15,15 +15,21 @@ const Login = lazy(() => import("./components/Login/Login"));
 const Signup = lazy(() => import("./components/Signup/Signup"));
 const Thank = lazy(() => import("./components/Thank/Thank"));
 const Payment = lazy(() => import("./components/Payment/Payment"));
+const AskWhichUser = lazy(() =>
+  import("./components/AskWhichUser/AskWhichUser")
+);
 const SpecificOrphanage = lazy(() =>
   import("./components/SpecificOrphanage/SpecificOrphanage")
 );
 const News = lazy(() => import("./components/News/News"));
+const LoginOrphanage = lazy(() => import("./components/Login/LoginOrphanage"));
 const ForgotPassword = lazy(() =>
   import("./components/ForgotPassword/ForgotPassword")
 );
 const Dashboard = lazy(() => import("./components/Dummy_dashboard"));
-const SignupOrphanage = lazy(() => import("./components/Signup/SignupOrphanage.jsx"));
+const SignupOrphanage = lazy(() =>
+  import("./components/Signup/SignupOrphanage.jsx")
+);
 
 function App() {
   // useEffect(() => {
@@ -40,10 +46,16 @@ function App() {
             </Route>
             {/* <Route exact path="/" element={<Login />} /> */}
             <Route exact path="/Signup" element={<Signup />} />
-            <Route exact path="/SignupOrphanage" element={<SignupOrphanage />} />
+            <Route
+              exact
+              path="/SignupOrphanage"
+              element={<SignupOrphanage />}
+            />
+            <Route exact path="/AskWhichUser" element={<AskWhichUser />} />
             <Route exact path="/Thank" element={<Thank />} />
             <Route exact path="/Payment" element={<Payment />} />
             <Route exact path="/Login" element={<Login />} />
+            <Route exact path="/LoginOrphanage" element={<LoginOrphanage />} />
             <Route
               exact
               path="/SpecificOrphanage"

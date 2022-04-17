@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Transition } from "@headlessui/react";
 import { RiHomeHeartFill } from "react-icons/ri";
 import { FaDonate } from "react-icons/fa";
@@ -10,9 +10,16 @@ import image3 from "../images/image3.jpg";
 import image4 from "../images/image4.jpg";
 import image6 from "../images/image6.jpg";
 import image5 from "../images/image5.jpeg";
+import { getOrphanageDataProfile } from "../../Firebase";
 
 const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("Orphanage Name","Mother teresas home");
+    let name = localStorage.getItem("Orphanage Name");
+    getOrphanageDataProfile(name);
+  }, [])
 
   return (
     <>
@@ -69,7 +76,7 @@ const Home = () => {
                     </a>
 
                     <a
-                      href="/Login"
+                      href="/AskWhichUser"
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                       style={{ fontSize: "15px", letterSpacing: "3px" }}
                     >
