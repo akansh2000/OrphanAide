@@ -16,10 +16,10 @@ const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("Orphanage Name","Mother teresas home");
+    localStorage.setItem("Orphanage Name", "Mother teresas home");
     let name = localStorage.getItem("Orphanage Name");
     getOrphanageDataProfile(name);
-  }, [])
+  }, []);
 
   return (
     <>

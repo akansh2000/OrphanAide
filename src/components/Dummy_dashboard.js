@@ -4,12 +4,13 @@ import {
   loadUserProfile,
   chart_data,
 } from "../Firebase";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import logo from "./images/logo1.png";
 import { Transition } from "@headlessui/react";
 import { FaUserAlt } from "react-icons/fa";
 import Graph from "./Graph";
+import { GiMagnifyingGlass } from "react-icons/gi";
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
@@ -37,6 +38,7 @@ export default function Dummy_dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [orphanages, setOrphanages] = useState(1);
   const [profile, setProfile] = useState(0);
+  const [orphanage_profile, setOrphanageProfile] = useState(0);
   const [chartData, setData] = useState([]);
 
   const showOrphanages = () => {
@@ -65,9 +67,52 @@ export default function Dummy_dashboard() {
   function userProfile() {
     setOrphanages(0);
     setProfile(1);
+    setOrphanageProfile(0);
     loadUserProfile();
     setData(chart_data);
   }
+
+  function orphanageProfile() {
+    setOrphanages(0);
+    setOrphanageProfile(1);
+    loadUserProfile();
+    setData(chart_data);
+  }
+
+  let states = [
+    "Andaman and Nicobar",
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chandigarh",
+    "Chhattisgarh",
+    "Delhi",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jammu and Kashmir",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Mizoram",
+    "Nagaland",
+    "Orissa",
+    "Puducherry",
+    "Punjab",
+    "Rajasthan",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal",
+  ];
+
+  const [state, setState] = useState("");
 
   return (
     <>
@@ -97,45 +142,35 @@ export default function Dummy_dashboard() {
                   className="ml-10 flex items-baseline space-x-4"
                   style={{ width: "100%", justifyContent: "space-evenly" }}
                 >
-                  <a
-                    href="/"
-                    className=" hover:bg-gray-700 text-white px-3 py-2 nav_button"
-                    style={{ fontSize: "15px", letterSpacing: "3px" }}
-                  >
-                    Home
-                  </a>
-
-                  <a
-                    href="/AllUsersDonation"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
-                    style={{ fontSize: "15px", letterSpacing: "3px" }}
-                  >
-                    Team
-                  </a>
-
-                  <a
-                    href="/News"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
-                    style={{ fontSize: "15px", letterSpacing: "3px" }}
-                  >
-                    News
-                  </a>
-
-                  <a
-                    href="/SpecificOrphanage"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
-                    style={{ fontSize: "15px", letterSpacing: "3px" }}
-                  >
-                    Donate
-                  </a>
-
-                  {/* <a
-                    href="/Login"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
-                    style={{ fontSize: "15px", letterSpacing: "3px" }}
-                  >
-                    Log in
-                  </a> */}
+                  <div className="relative text-gray-600">
+                    <input
+                      type="search"
+                      name="search"
+                      placeholder="Enter state"
+                      className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
+                      list="states"
+                      id="input_state"
+                      onChange={(e) => {
+                        setState(e.target.value);
+                      }}
+                    />
+                    <datalist id="states">
+                      {states.map((state) => (
+                        <option value={state} />
+                      ))}
+                    </datalist>
+                    <button
+                      className="absolute right-0 top-0 mr-4"
+                      style={{ marginTop: "10px" }}
+                      onClick={() => {
+                        loadDashboardOrphanage(state);
+                      }}
+                    >
+                      <GiMagnifyingGlass
+                        style={{ width: "1.5rem", height: "1.5rem" }}
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -198,45 +233,36 @@ export default function Dummy_dashboard() {
           {(ref) => (
             <div className="md:hidden" id="mobile-menu">
               <div ref={ref} className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a
-                  href="/"
-                  className="hover:bg-gray-700 text-white block px-3 py-2 nav_button"
-                  style={{ fontSize: "15px", letterSpacing: "3px" }}
-                >
-                  Home
-                </a>
-
-                <a
-                  href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
-                  style={{ fontSize: "15px", letterSpacing: "3px" }}
-                >
-                  Team
-                </a>
-
-                <a
-                  href="/News"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
-                  style={{ fontSize: "15px", letterSpacing: "3px" }}
-                >
-                  News
-                </a>
-
-                <a
-                  href="/SpecificOrphanage"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
-                  style={{ fontSize: "15px", letterSpacing: "3px" }}
-                >
-                  Donate
-                </a>
-
-                {/* <a
-                  href="/Login"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
-                  style={{ fontSize: "15px", letterSpacing: "3px" }}
-                >
-                  Log in
-                </a> */}
+                <div className="relative text-gray-600">
+                  <input
+                    name="search_min"
+                    placeholder="Enter state"
+                    className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
+                    list="states_min"
+                    onChange={(e) => {
+                      setState(e.target.value);
+                    }}
+                  />
+                  <datalist id="states_min">
+                    {states.map((state) => (
+                      <option value={state} />
+                    ))}
+                  </datalist>
+                  <button
+                    className="absolute right-0 top-0 my-auto mr-4"
+                    onClick={() => {
+                      loadDashboardOrphanage(state);
+                    }}
+                  >
+                    <GiMagnifyingGlass
+                      style={{
+                        width: "1.5rem",
+                        height: "1.5rem",
+                        color: "yellowgreen",
+                      }}
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -290,7 +316,49 @@ export default function Dummy_dashboard() {
               )}
             </li>
             <li>
-              {profile == 1 ? (
+              {localStorage.getItem("LogInAs") === "user" ? (
+                profile == 1 ? (
+                  <button
+                    className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
+                    style={{
+                      height: "3rem",
+                      width: "130px",
+                      marginLeft: "2rem",
+                      paddingLeft: "1rem",
+                      backgroundColor: "yellowgreen",
+                      borderRadius: "8px",
+                    }}
+                    onClick={() => {
+                      // setOrphanages(0);
+                      // setProfile(1);
+                      userProfile();
+                    }}
+                  >
+                    <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
+                      Profile
+                    </span>
+                  </button>
+                ) : (
+                  <button
+                    className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
+                    style={{
+                      height: "3rem",
+                      width: "130px",
+                      marginLeft: "2rem",
+                      paddingLeft: "1rem",
+                    }}
+                    onClick={() => {
+                      // setOrphanages(0);
+                      // setProfile(1);
+                      userProfile();
+                    }}
+                  >
+                    <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
+                      Profile
+                    </span>
+                  </button>
+                )
+              ) : orphanage_profile == 1 ? (
                 <button
                   className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
                   style={{
@@ -304,11 +372,11 @@ export default function Dummy_dashboard() {
                   onClick={() => {
                     // setOrphanages(0);
                     // setProfile(1);
-                    userProfile();
+                    orphanageProfile();
                   }}
                 >
                   <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
-                    Profile
+                    Profile1
                   </span>
                 </button>
               ) : (
@@ -323,14 +391,31 @@ export default function Dummy_dashboard() {
                   onClick={() => {
                     // setOrphanages(0);
                     // setProfile(1);
-                    userProfile();
+                    orphanageProfile();
                   }}
                 >
                   <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
-                    Profile
+                    Profile1
                   </span>
                 </button>
               )}
+            </li>
+            <li>
+              <Link to="/News" target="_blank">
+                <button
+                  className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
+                  style={{
+                    height: "3rem",
+                    width: "130px",
+                    marginLeft: "2rem",
+                    paddingLeft: "1rem",
+                  }}
+                >
+                  <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
+                    News
+                  </span>
+                </button>
+              </Link>
             </li>
             <li>
               <button
@@ -443,38 +528,7 @@ export default function Dummy_dashboard() {
                               </th>
                             </tr>
                           </thead>
-                          <tbody id="table-data">
-                            {/* {user_donation.map((donation) => (
-                              <tr>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <div className="flex items-center">
-                                    <div className="flex-shrink-0 w-10 h-10">
-                                      <img
-                                        className="w-full h-full rounded-full"
-                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                        alt=""
-                                      />
-                                    </div>
-                                    <div className="ml-3">
-                                      <p className="text-gray-900 whitespace-no-wrap">
-                                        {donation.orphanage}
-                                      </p>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {donation.amount}
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    Jan 21, 2020
-                                  </p>
-                                </td>
-                              </tr>
-                            ))} */}
-                          </tbody>
+                          <tbody id="table-data"></tbody>
                         </table>
                       </div>
                     </div>
