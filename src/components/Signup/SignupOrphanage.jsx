@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { HandleOrphanageSignupFirebase } from "../../Firebase";
 
 export default function SignupOrphanage() {
+  const [orphanageID, setID] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -17,21 +18,9 @@ export default function SignupOrphanage() {
     e.preventDefault();
 
     setLoaded(false);
-    HandleOrphanageSignupFirebase(navigate, email, password, name, address, orpstate, phone, repeat);
+    HandleOrphanageSignupFirebase(navigate, orphanageID, email, password, name, address, orpstate, phone, repeat);
     setLoaded(true);
-    // const signString = localStorage.getItem("SignedIn");
-    // if(signString.length === 4){
-    //   emptyField();
-    // }
   };
-
-  // function emptyField() {
-  //   setName("");
-  //   setPhone("");
-  //   setEmail("");
-  //   setPassword("");
-  //   setRepeat("");
-  // }
 
   return (
     <>
@@ -77,6 +66,17 @@ export default function SignupOrphanage() {
               className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto"
               onSubmit={handleSignup}
             >
+              <div className="pb-2 pt-4">
+                <input
+                  type="text"
+                  name="Orphanage ID"
+                  placeholder="Orphanage ID"
+                  className="block w-full p-4 text-lg rounded-sm bg-black"
+                  value={orphanageID}
+                  required
+                  onChange={(event) => setID(event.target.value)}
+                />
+              </div>
               <div className="pb-2 pt-4">
                 <input
                   type="text"
@@ -179,7 +179,7 @@ export default function SignupOrphanage() {
                 <div className="px-4 pb-2 pt-4 text-center text-lg">
                   <p>
                     Already Registered?
-                    <Link to="../Login">
+                    <Link to="/LoginOrphanage">
                       <span className="text-blue-800 "> Sign In</span>
                     </Link>
                   </p>

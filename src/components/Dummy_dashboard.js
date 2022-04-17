@@ -1,7 +1,6 @@
 import {
   Logout,
   loadDashboardOrphanage,
-  loadOrphanageTitle,
   loadUserProfile,
   chart_data,
 } from "../Firebase";
@@ -107,7 +106,7 @@ export default function Dummy_dashboard() {
                   </a>
 
                   <a
-                    href="/Payment"
+                    href="/AllUsersDonation"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
@@ -342,23 +341,10 @@ export default function Dummy_dashboard() {
                   marginLeft: "2rem",
                   paddingLeft: "1rem",
                 }}
-              >
-                <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
-                  Notifications
-                </span>
-                {/* <span className="ml-auto mr-6 text-sm bg-red-100 rounded-full px-3 py-px text-red-500">
-                  5
-                </span> */}
-              </button>
-            </li>
-            <li>
-              <button
-                className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
-                style={{
-                  height: "3rem",
-                  width: "130px",
-                  marginLeft: "2rem",
-                  paddingLeft: "1rem",
+                onClick={() => {
+                  // setOrphanages(0);
+                  // setProfile(1);
+                  Logout(navigate);
                 }}
               >
                 <span style={{ fontSize: "15px", letterSpacing: "2px" }}>

@@ -3,7 +3,7 @@ import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import { update } from "../../automation";
 
-import { HandleLoginFirebase, writeNewsData } from "../../Firebase";
+import { HandleLoginFirebase} from "../../Firebase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,15 +15,7 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     setLoaded(false);
-    let desc =
-      "This year's first cyclone is set to develop in the Bay of Bengal around March 21, as per India Meteorological Department. 'We are monitoring the situation and everyday it will be updated', said Dr M Mohapatra, DGM, IMD to Mirror Now.";
-    writeNewsData(
-      "Cyclone Asani: First cyclone of 2022 is set to develop in Bay of Bengal around March 21",
-      desc,
-      "Andhra Pradesh",
-      "False"
-    );
-    // update();
+
     HandleLoginFirebase(navigate, email, password);
 
     setEmail("");
