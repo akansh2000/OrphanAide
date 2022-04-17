@@ -16,19 +16,7 @@ export default function Signup() {
 
     setLoaded(false);
     HandleSignupFirebase(navigate, email, password, name, phone, repeat);
-    // const signString = localStorage.getItem("SignedIn");
-    // if(signString.length === 4){
-    //   emptyField();
-    // }
   };
-
-  // function emptyField() {
-  //   setName("");
-  //   setPhone("");
-  //   setEmail("");
-  //   setPassword("");
-  //   setRepeat("");
-  // }
 
   return (
     <>
@@ -154,7 +142,7 @@ export default function Signup() {
                 <div className="px-4 pb-2 pt-4 text-center text-lg">
                   <p>
                     Already a customer?
-                    <Link to="../Login">
+                    <Link to="/Login">
                       <span className="text-blue-800 "> Sign In</span>
                     </Link>
                   </p>

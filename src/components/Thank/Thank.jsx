@@ -1,9 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { donationToOrphanage } from "../../Firebase";
-import { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 export default function Dummy_dashboard() {
   const navigate = useNavigate();
@@ -16,7 +13,6 @@ export default function Dummy_dashboard() {
     let amount = localStorage.getItem("amount");
     donationToOrphanage(amount);
     localStorage.removeItem("amount");
-    // localStorage.removeItem("Orphanage Name");
   }, []);
 
   return (

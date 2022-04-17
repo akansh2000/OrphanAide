@@ -90,7 +90,7 @@ const HandleSignupFirebase = (
         })
           .then(() => {
             // localStorage.setItem("SignedIn", flag);
-            navigate("../Login");
+            navigate("/Login");
             //send email verification
           })
           .catch((error) => {
@@ -176,7 +176,9 @@ function allUserDonationDetails() {
         arr.push(obj);
       }
     });
-    for (let i = 0; i < arr.length; i++) console.log("Arr1\n" + arr[i].id);
+    
+    
+
   });
 }
 
@@ -452,13 +454,6 @@ function loadUserProfile() {
       str1 += `<tr>
       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <div class="flex items-center">
-          <div class="flex-shrink-0 w-10 h-10">
-            <img
-              class="w-full h-full rounded-full"
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-              alt=""
-            />
-          </div>
           <div class="ml-3">
             <p class="text-gray-900 whitespace-no-wrap">
               ${data[idx].orphanage}
@@ -770,10 +765,9 @@ const Logout = (navigate) => {
     });
     localStorage.removeItem("Bearer");
   }
-
+  navigate("/");
   signOut(auth);
   //localStorage.removeItem("Bearer");
-  navigate("../");
 };
 
 const FetchToken = () => {

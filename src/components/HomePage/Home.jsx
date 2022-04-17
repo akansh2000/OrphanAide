@@ -68,14 +68,6 @@ const Home = () => {
                     </a>
 
                     <a
-                      href="/Payment"
-                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
-                      style={{ fontSize: "15px", letterSpacing: "3px" }}
-                    >
-                      Donate
-                    </a>
-
-                    <a
                       href="/AskWhichUser"
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                       style={{ fontSize: "15px", letterSpacing: "3px" }}
@@ -166,14 +158,6 @@ const Home = () => {
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
                     News
-                  </a>
-
-                  <a
-                    href="/Payment"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
-                    style={{ fontSize: "15px", letterSpacing: "3px" }}
-                  >
-                    Donate
                   </a>
 
                   <a
