@@ -72,21 +72,40 @@ const numberToFix = (number, fix) => (number || 0).toFixed(fix);
 const Graph = ({ info }) => {
   const data = buildData(info);
 
+  let maxval = 0;
+  for (var i = 0; i < data["datasets"][0]["data"].length; i++) {
+    if (maxval < data["datasets"][0]["data"][i]) {
+      maxval = data["datasets"][0]["data"][i];
+    }
+  }
+
+  let total = 0;
+  for (var i = 0; i < data["datasets"][0]["data"].length; i++) {
+    total += data["datasets"][0]["data"][i];
+  }
+
   return (
     <>
       <div
         className="rounded shadow-xl overflow-hidden w-full md:flex"
-        style={{ maxWidth: "900px", height: "194px" }}
+        style={{ maxWidth: "900px", height: "210px" }}
       >
         <div className="flex w-full md:w-1/2 px-5 pb-4 pt-8 bg-indigo-500 text-white items-center">
           <Line type="line" data={data} options={options} />
         </div>
-        <div className="flex w-full md:w-1/2 p-10 bg-gray-100 text-gray-600 ">
-          <div className="w-full">
-            <h1 className="text-lg font-semibold leading-tight text-gray-800">
-              Donation Analysis
-            </h1>
+        <div className=" border-gray-200 p-6 rounded-lg">
+          <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
+            <MdAutoGraph style={{ width: "1.5rem", height: "1.5rem" }} />
           </div>
+          <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
+            Donation Analysis
+          </h2>
+          <p className="leading-relaxed text-base">
+            Highest donation made: ₹{maxval}{" "}
+          </p>
+          <p className="leading-relaxed text-base">
+            Total yearly donation made: ₹{total}{" "}
+          </p>
         </div>
       </div>
     </>

@@ -4,3 +4,4 @@ npm install -D tailwindcss postcss autoprefixer
 npm install @stripe/react-stripe-js @stripe/stripe-js
 Even after "npm i" it shows Module not found : @headlessui/react ->  npm i @headlessui/react
 Rectify spinner on alert
+npm i react-chartjs-2

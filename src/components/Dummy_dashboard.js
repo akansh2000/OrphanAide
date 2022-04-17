@@ -1,4 +1,10 @@
-import { Logout } from "../Firebase";
+import {
+  Logout,
+  loadDashboardOrphanage,
+  loadOrphanageTitle,
+  loadUserProfile,
+  chart_data,
+} from "../Firebase";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import logo from "./images/logo1.png";
@@ -6,7 +12,7 @@ import { Transition } from "@headlessui/react";
 import { FaUserAlt } from "react-icons/fa";
 import Graph from "./Graph";
 
-import { initializeApp } from "firebase/app"; //.
+import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
@@ -24,35 +30,31 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase(app);
-let orphanagelist = [];
 let users = [];
+let user_donation = [];
 
 export default function Dummy_dashboard() {
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [orphanages, setOrphanages] = useState(1);
+  const [profile, setProfile] = useState(0);
+  const [chartData, setData] = useState([]);
+
+  const showOrphanages = () => {
+    setOrphanages(1);
+    setProfile(0);
+    loadDashboardOrphanage();
+  };
+
   useEffect(() => {
     componentDidUpdate();
-
-    const databaseRef = ref(db, "orphanage/");
-    onValue(databaseRef, (snapshot) => {
-      const data = snapshot.val();
-      orphanagelist = data;
-      setItems(orphanagelist);
-      console.log(auth.currentUser.uid);
-    });
-
+    loadDashboardOrphanage();
     const databaseRef_user = ref(db, "users/");
     onValue(databaseRef_user, (snapshot) => {
       const data = snapshot.val();
       users = data;
     });
   }, []);
-
-  const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
-  const [items, setItems] = useState([]);
-
-  const [orphanages, setOrphanages] = useState(1);
-  const [profile, setProfile] = useState(0);
-  // const [orphanages, setOrphanages] = useState(0);
 
   function componentDidUpdate() {
     window.history.pushState(null, document.title, window.location.href);
@@ -61,40 +63,12 @@ export default function Dummy_dashboard() {
     });
   }
 
-  const data = {
-    stockFullName: "SW Limited.",
-    stockShortName: "ASX:SFW",
-    price: {
-      current: 2.32,
-      open: 2.23,
-      low: 2.215,
-      high: 2.325,
-      cap: 93765011,
-      ratio: 20.1,
-      dividend: 1.67,
-    },
-    chartData: {
-      labels: [
-        "10:00",
-        "",
-        "",
-        "",
-        "12:00",
-        "",
-        "",
-        "",
-        "2:00",
-        "",
-        "",
-        "",
-        "4:00",
-      ],
-      data: [
-        2.23, 2.215, 2.22, 2.25, 2.245, 2.27, 2.28, 2.29, 2.3, 2.29, 2.325,
-        2.325, 2.32,
-      ],
-    },
-  };
+  function userProfile() {
+    setOrphanages(0);
+    setProfile(1);
+    loadUserProfile();
+    setData(chart_data);
+  }
 
   return (
     <>
@@ -141,7 +115,7 @@ export default function Dummy_dashboard() {
                   </a>
 
                   <a
-                    href="/Payment"
+                    href="/News"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
@@ -156,13 +130,13 @@ export default function Dummy_dashboard() {
                     Donate
                   </a>
 
-                  <a
+                  {/* <a
                     href="/Login"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
                     Log in
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
@@ -242,7 +216,7 @@ export default function Dummy_dashboard() {
                 </a>
 
                 <a
-                  href="#"
+                  href="/News"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                   style={{ fontSize: "15px", letterSpacing: "3px" }}
                 >
@@ -257,13 +231,13 @@ export default function Dummy_dashboard() {
                   Donate
                 </a>
 
-                <a
+                {/* <a
                   href="/Login"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                   style={{ fontSize: "15px", letterSpacing: "3px" }}
                 >
                   Log in
-                </a>
+                </a> */}
               </div>
             </div>
           )}
@@ -278,7 +252,6 @@ export default function Dummy_dashboard() {
             <li>
               {orphanages == 1 ? (
                 <button
-                  href="#"
                   className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
                   style={{
                     height: "3rem",
@@ -289,8 +262,7 @@ export default function Dummy_dashboard() {
                     borderRadius: "8px",
                   }}
                   onClick={() => {
-                    setOrphanages(1);
-                    setProfile(0);
+                    showOrphanages();
                   }}
                 >
                   {" "}
@@ -308,8 +280,7 @@ export default function Dummy_dashboard() {
                     paddingLeft: "1rem",
                   }}
                   onClick={() => {
-                    setOrphanages(1);
-                    setProfile(0);
+                    showOrphanages();
                   }}
                 >
                   {" "}
@@ -332,8 +303,9 @@ export default function Dummy_dashboard() {
                     borderRadius: "8px",
                   }}
                   onClick={() => {
-                    setOrphanages(0);
-                    setProfile(1);
+                    // setOrphanages(0);
+                    // setProfile(1);
+                    userProfile();
                   }}
                 >
                   <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
@@ -350,8 +322,9 @@ export default function Dummy_dashboard() {
                     paddingLeft: "1rem",
                   }}
                   onClick={() => {
-                    setOrphanages(0);
-                    setProfile(1);
+                    // setOrphanages(0);
+                    // setProfile(1);
+                    userProfile();
                   }}
                 >
                   <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
@@ -400,28 +373,7 @@ export default function Dummy_dashboard() {
             {" "}
             <section className="text-gray-600 body-font">
               <div className="container px-5 py-24 mx-auto">
-                <div className="flex flex-wrap -m-4">
-                  {items.map((item) => (
-                    <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                      <a className="block relative h-48 rounded overflow-hidden">
-                        <img
-                          alt="ecommerce"
-                          className="object-cover object-center w-full h-full block"
-                          src="https://dummyimage.com/420x260"
-                        />
-                      </a>
-                      <div className="mt-4">
-                        <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                          Current Condition: {item.current_condition}
-                        </h3>
-                        <h2 className="text-gray-900 title-font text-lg font-medium">
-                          {item.name}
-                        </h2>
-                        <p className="mt-1">{item.address}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <div className="flex flex-wrap -m-4" id="orphanage_cards"></div>
               </div>
             </section>
           </div>
@@ -429,336 +381,122 @@ export default function Dummy_dashboard() {
           ""
         )}
         {profile == 1 ? (
-          // <section className="text-gray-600 body-font">
-          //   <div className="container px-5 py-24 mx-auto">
-          //     <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-          //       <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
-          //         Welcome, {users[auth.currentUser.uid]["name"]}
-          //       </h1>
-          //       <p
-          //         className="lg:w-1/2 w-full text-gray-500"
-          //         style={{ textAlign: "justify" }}
-          //       >
-          //         We are so glad to have you as a donor on our platform, you are
-          //         doing a great service for the poor people of our society. You
-          //         are helping poor people with money and food to get them back
-          //         on their feet. We hope that you continue such amazing work in
-          //         the future.
-          //       </p>
-          //     </div>
-          //     <div className="flex flex-wrap -m-4">
-          //       <div className="xl:w-1/3 md:w-1/2 p-4">
-          //         <div className="border border-gray-200 p-6 rounded-lg">
-          //           <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
-          //             <FaUserAlt />
-          //           </div>
-          //           <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
-          //             {users[auth.currentUser.uid]["name"]}
-          //           </h2>
-          //           <p className="leading-relaxed text-base">
-          //             Email: {users[auth.currentUser.uid]["email"]}
-          //           </p>
-          //           <p className="leading-relaxed text-base">
-          //             Contact number: {users[auth.currentUser.uid]["phone"]}
-          //           </p>
-          //         </div>
-          //       </div>
-          //       <div className="xl:w-2/3 md:w-1/2 p-4">
-          //         <div className="border border-gray-200 p-6 rounded-lg">
-          //           <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
-          //             <svg
-          //               fill="none"
-          //               stroke="currentColor"
-          //               stroke-linecap="round"
-          //               stroke-linejoin="round"
-          //               stroke-width="2"
-          //               className="w-6 h-6"
-          //               viewBox="0 0 24 24"
-          //             >
-          //               <circle cx="6" cy="6" r="3"></circle>
-          //               <circle cx="6" cy="18" r="3"></circle>
-          //               <path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"></path>
-          //             </svg>
-          //           </div>
-          //           <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
-          //             The Catalyzer
-          //           </h2>
-          //           <p className="leading-relaxed text-base">
-          //             Fingerstache flexitarian street art 8-bit waist co, subway
-          //             tile poke farm.
-          //           </p>
-          //         </div>
-          //       </div>
-          //     </div>
-          //     <section>
-          //       <div className="bg-white p-8 rounded-md w-full">
-          //         <div className=" flex items-center justify-between pb-6">
-          //           <div>
-          //             <h2
-          //               className="text-gray-600 font-semibold"
-          //               style={{ letterSpacing: "2px" }}
-          //             >
-          //               Donations Table
-          //             </h2>
-          //             <span className="text-xs">All products item</span>
-          //           </div>
-          //         </div>
-          //         <div>
-          //           <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-          //             <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-          //               <table className="min-w-full leading-normal">
-          //                 <thead>
-          //                   <tr>
-          //                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          //                       Name
-          //                     </th>
-          //                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          //                       products
-          //                     </th>
-          //                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          //                       Created at
-          //                     </th>
-          //                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          //                       QRT
-          //                     </th>
-          //                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-          //                       Status
-          //                     </th>
-          //                   </tr>
-          //                 </thead>
-          //                 <tbody>
-          //                   <tr>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <div className="flex items-center">
-          //                         <div className="flex-shrink-0 w-10 h-10">
-          //                           <img
-          //                             className="w-full h-full rounded-full"
-          //                             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-          //                             alt=""
-          //                           />
-          //                         </div>
-          //                         <div className="ml-3">
-          //                           <p className="text-gray-900 whitespace-no-wrap">
-          //                             Vera Carpenter
-          //                           </p>
-          //                         </div>
-          //                       </div>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         Admin
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         Jan 21, 2020
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         43
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-          //                         <span
-          //                           aria-hidden
-          //                           className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-          //                         ></span>
-          //                         <span className="relative">Activo</span>
-          //                       </span>
-          //                     </td>
-          //                   </tr>
-          //                   <tr>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <div className="flex items-center">
-          //                         <div className="flex-shrink-0 w-10 h-10">
-          //                           <img
-          //                             className="w-full h-full rounded-full"
-          //                             src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-          //                             alt=""
-          //                           />
-          //                         </div>
-          //                         <div className="ml-3">
-          //                           <p className="text-gray-900 whitespace-no-wrap">
-          //                             Blake Bowman
-          //                           </p>
-          //                         </div>
-          //                       </div>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         Editor
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         Jan 01, 2020
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         77
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-          //                         <span
-          //                           aria-hidden
-          //                           className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-          //                         ></span>
-          //                         <span className="relative">Activo</span>
-          //                       </span>
-          //                     </td>
-          //                   </tr>
-          //                   <tr>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <div className="flex items-center">
-          //                         <div className="flex-shrink-0 w-10 h-10">
-          //                           <img
-          //                             className="w-full h-full rounded-full"
-          //                             src="https://images.unsplash.com/photo-1540845511934-7721dd7adec3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-          //                             alt=""
-          //                           />
-          //                         </div>
-          //                         <div className="ml-3">
-          //                           <p className="text-gray-900 whitespace-no-wrap">
-          //                             Dana Moore
-          //                           </p>
-          //                         </div>
-          //                       </div>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         Editor
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         Jan 10, 2020
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         64
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          //                       <span className="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-          //                         <span
-          //                           aria-hidden
-          //                           className="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
-          //                         ></span>
-          //                         <span className="relative">Suspended</span>
-          //                       </span>
-          //                     </td>
-          //                   </tr>
-          //                   <tr>
-          //                     <td className="px-5 py-5 bg-white text-sm">
-          //                       <div className="flex items-center">
-          //                         <div className="flex-shrink-0 w-10 h-10">
-          //                           <img
-          //                             className="w-full h-full rounded-full"
-          //                             src="https://images.unsplash.com/photo-1522609925277-66fea332c575?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&h=160&w=160&q=80"
-          //                             alt=""
-          //                           />
-          //                         </div>
-          //                         <div className="ml-3">
-          //                           <p className="text-gray-900 whitespace-no-wrap">
-          //                             Alonzo Cox
-          //                           </p>
-          //                         </div>
-          //                       </div>
-          //                     </td>
-          //                     <td className="px-5 py-5 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         Admin
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         Jan 18, 2020
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 bg-white text-sm">
-          //                       <p className="text-gray-900 whitespace-no-wrap">
-          //                         70
-          //                       </p>
-          //                     </td>
-          //                     <td className="px-5 py-5 bg-white text-sm">
-          //                       <span className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-          //                         <span
-          //                           aria-hidden
-          //                           className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
-          //                         ></span>
-          //                         <span className="relative">Inactive</span>
-          //                       </span>
-          //                     </td>
-          //                   </tr>
-          //                 </tbody>
-          //               </table>
-          //               <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-          //                 <span className="text-xs xs:text-sm text-gray-900">
-          //                   Showing 1 to 4 of 50 Entries
-          //                 </span>
-          //                 <div className="inline-flex mt-2 xs:mt-0">
-          //                   <button className="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-l">
-          //                     Prev
-          //                   </button>
-          //                   &nbsp; &nbsp;
-          //                   <button className="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-r">
-          //                     Next
-          //                   </button>
-          //                 </div>
-          //               </div>
-          //             </div>
-          //           </div>
-          //         </div>
-          //       </div>
-          //     </section>
-          //   </div>
-          // </section>
-
-          <section className="text-gray-600 body-font">
-            <div className="container px-5 py-24 mx-auto">
-              <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-                <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
-                  Welcome, {users[auth.currentUser.uid]["name"]}
-                </h1>
-                <p
-                  className="lg:w-1/2 w-full text-gray-500"
-                  style={{ textAlign: "justify" }}
-                >
-                  We are so glad to have you as a donor on our platform, you are
-                  doing a great service for the poor people of our society. You
-                  are helping poor people with money and food to get them back
-                  on their feet. We hope that you continue such amazing work in
-                  the future.
-                </p>
-              </div>
-              <div className="flex flex-wrap -m-4">
-                <div className="xl:w-1/3 md:w-1 p-4">
-                  <div className="border border-gray-200 p-6 rounded-lg">
-                    <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
-                      <FaUserAlt />
+          <>
+            <section className="text-gray-600 body-font">
+              <div className="container px-5 py-24 mx-auto">
+                <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
+                  <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+                    Welcome, {users[auth.currentUser.uid]["name"]}
+                  </h1>
+                  <p
+                    className="lg:w-1/2 w-full text-gray-500"
+                    style={{ textAlign: "justify" }}
+                  >
+                    We are so glad to have you as a donor on our platform, you
+                    are doing a great service for the poor people of our
+                    society. You are helping poor people with money and food to
+                    get them back on their feet. We hope that you continue such
+                    amazing work in the future.
+                  </p>
+                </div>
+                <div className="flex flex-wrap -m-4 ">
+                  <div
+                    className="xl:w-1/3 md:w-1 p-4 shadow-xl overflow-hidden rounded"
+                    style={{ height: "226px" }}
+                  >
+                    <div
+                      className="border border-gray-200 p-6 rounded-lg"
+                      style={{ height: "210px" }}
+                    >
+                      <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
+                        <FaUserAlt
+                          style={{ width: "1.5rem", height: "1.5rem" }}
+                        />
+                      </div>
+                      <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
+                        {users[auth.currentUser.uid]["name"]}
+                      </h2>
+                      <p className="leading-relaxed text-base">
+                        Email: {users[auth.currentUser.uid]["email"]}
+                      </p>
+                      <p className="leading-relaxed text-base">
+                        Phone: {users[auth.currentUser.uid]["phone"]}
+                      </p>
                     </div>
-                    <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
-                      {users[auth.currentUser.uid]["name"]}
-                    </h2>
-                    <p className="leading-relaxed text-base">
-                      Email: {users[auth.currentUser.uid]["email"]}
-                    </p>
-                    <p className="leading-relaxed text-base">
-                      Phone: {users[auth.currentUser.uid]["phone"]}
-                    </p>
+                  </div>
+                  <div className="xl:w-2/3 md:w-1 p-4">
+                    <Graph info={chartData} style={{ height: "194px" }} />
                   </div>
                 </div>
-                <div className="xl:w-2/3 md:w-1 p-4">
-                  <Graph info={data} style={{ height: "194px" }} />
+                <div
+                  className="bg-white p-8 rounded-md w-full my-auto"
+                  style={{ marginTop: "2rem" }}
+                >
+                  <div className=" flex items-center justify-between pb-6">
+                    <div>
+                      <h2 className="text-gray-600 font-semibold">
+                        Tabular Data
+                      </h2>
+                      <span className="text-xs">All donations till now</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                      <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                        <table className="min-w-full leading-normal">
+                          <thead>
+                            <tr>
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Orphanage Name
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Donated Amount
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Donation time
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody id="table-data">
+                            {/* {user_donation.map((donation) => (
+                              <tr>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <div className="flex items-center">
+                                    <div className="flex-shrink-0 w-10 h-10">
+                                      <img
+                                        className="w-full h-full rounded-full"
+                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="ml-3">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {donation.orphanage}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {donation.amount}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    Jan 21, 2020
+                                  </p>
+                                </td>
+                              </tr>
+                            ))} */}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </>
         ) : (
           ""
         )}
