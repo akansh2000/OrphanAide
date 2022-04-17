@@ -1,31 +1,74 @@
-import { Logout, allUserDonationDetails } from "../Firebase";
+import {
+  Logout,
+  loadDashboardOrphanage,
+  loadOrphanageTitle,
+  loadUserProfile,
+  chart_data,
+} from "../Firebase";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import logo from "./images/logo1.png";
 import { Transition } from "@headlessui/react";
-import Orphanages from "./Orphanages";
+import { FaUserAlt } from "react-icons/fa";
+import Graph from "./Graph";
+
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set, onValue } from "firebase/database";
+import { getAuth } from "firebase/auth";
+
+const firebaseConfig = {
+  //.
+  apiKey: "AIzaSyCjepQRClsAeuzbjyQnkW8mYed1oOFbG-4",
+  authDomain: "orphanaide.firebaseapp.com",
+  projectId: "orphanaide",
+  storageBucket: "orphanaide.appspot.com",
+  messagingSenderId: "42815706163",
+  appId: "1:42815706163:web:e539dab75415ba72cbff46",
+  measurementId: "G-H99B1MH0CT",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getDatabase(app);
+let users = [];
+let user_donation = [];
 
 export default function Dummy_dashboard() {
-  // useEffect(() => {
-  //   componentDidUpdate();
-  // }, []);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [orphanages, setOrphanages] = useState(1);
+  const [profile, setProfile] = useState(0);
+  const [chartData, setData] = useState([]);
 
-  // const LogoutHelper = () => {
-  //   Logout(navigate);
-  // };
-
-  // function componentDidUpdate() {
-  //   window.history.pushState(null, document.title, window.location.href);
-  //   window.addEventListener("popstate", function (event) {
-  //     window.history.pushState(null, document.title, window.location.href);
-  //   });
-  // }
-
-  const handleMusic = () => {
-    allUserDonationDetails();
+  const showOrphanages = () => {
+    setOrphanages(1);
+    setProfile(0);
+    loadDashboardOrphanage();
   };
+
+  useEffect(() => {
+    componentDidUpdate();
+    loadDashboardOrphanage();
+    const databaseRef_user = ref(db, "users/");
+    onValue(databaseRef_user, (snapshot) => {
+      const data = snapshot.val();
+      users = data;
+    });
+  }, []);
+
+  function componentDidUpdate() {
+    window.history.pushState(null, document.title, window.location.href);
+    window.addEventListener("popstate", function (event) {
+      window.history.pushState(null, document.title, window.location.href);
+    });
+  }
+
+  function userProfile() {
+    setOrphanages(0);
+    setProfile(1);
+    loadUserProfile();
+    setData(chart_data);
+  }
 
   return (
     <>
@@ -87,13 +130,13 @@ export default function Dummy_dashboard() {
                     Donate
                   </a>
 
-                  <a
+                  {/* <a
                     href="/Login"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
                     Log in
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
@@ -173,7 +216,7 @@ export default function Dummy_dashboard() {
                 </a>
 
                 <a
-                  href="#"
+                  href="/News"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                   style={{ fontSize: "15px", letterSpacing: "3px" }}
                 >
@@ -188,13 +231,13 @@ export default function Dummy_dashboard() {
                   Donate
                 </a>
 
-                <a
+                {/* <a
                   href="/Login"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                   style={{ fontSize: "15px", letterSpacing: "3px" }}
                 >
                   Log in
-                </a>
+                </a> */}
               </div>
             </div>
           )}
@@ -207,211 +250,256 @@ export default function Dummy_dashboard() {
         >
           <ul className="flex flex-col py-4">
             <li>
-              <a
-                href="#"
-                className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
-              >
-                <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
-                  <i className="bx bx-home"></i>
-                </span>
-                <span className="text-sm font-medium">Dashboard</span>
-              </a>
+              {orphanages == 1 ? (
+                <button
+                  className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
+                  style={{
+                    height: "3rem",
+                    width: "130px",
+                    marginLeft: "2rem",
+                    paddingLeft: "1rem",
+                    backgroundColor: "yellowgreen",
+                    borderRadius: "8px",
+                  }}
+                  onClick={() => {
+                    showOrphanages();
+                  }}
+                >
+                  {" "}
+                  <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
+                    Orphanages
+                  </span>
+                </button>
+              ) : (
+                <button
+                  className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
+                  style={{
+                    height: "3rem",
+                    width: "130px",
+                    marginLeft: "2rem",
+                    paddingLeft: "1rem",
+                  }}
+                  onClick={() => {
+                    showOrphanages();
+                  }}
+                >
+                  {" "}
+                  <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
+                    Orphanages
+                  </span>
+                </button>
+              )}
             </li>
             <li>
-              {/* <a
-                href="#"
-                className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
-              > */}
-              <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
-                <i className="bx bx-music"></i>
-              </span>
-              <span
-                className="text-sm font-medium"
-                onClick={() => handleMusic()}
-              >
-                Music
-              </span>
-              {/* </a> */}
+              {profile == 1 ? (
+                <button
+                  className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
+                  style={{
+                    height: "3rem",
+                    width: "130px",
+                    marginLeft: "2rem",
+                    paddingLeft: "1rem",
+                    backgroundColor: "yellowgreen",
+                    borderRadius: "8px",
+                  }}
+                  onClick={() => {
+                    // setOrphanages(0);
+                    // setProfile(1);
+                    userProfile();
+                  }}
+                >
+                  <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
+                    Profile
+                  </span>
+                </button>
+              ) : (
+                <button
+                  className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
+                  style={{
+                    height: "3rem",
+                    width: "130px",
+                    marginLeft: "2rem",
+                    paddingLeft: "1rem",
+                  }}
+                  onClick={() => {
+                    // setOrphanages(0);
+                    // setProfile(1);
+                    userProfile();
+                  }}
+                >
+                  <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
+                    Profile
+                  </span>
+                </button>
+              )}
             </li>
             <li>
-              <a
-                href="#"
-                className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+              <button
+                className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
+                style={{
+                  height: "3rem",
+                  width: "130px",
+                  marginLeft: "2rem",
+                  paddingLeft: "1rem",
+                }}
               >
-                <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
-                  <i className="bx bx-user"></i>
+                <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
+                  Notifications
                 </span>
-                <span className="text-sm font-medium">Profile</span>
-              </a>
+                {/* <span className="ml-auto mr-6 text-sm bg-red-100 rounded-full px-3 py-px text-red-500">
+                  5
+                </span> */}
+              </button>
             </li>
             <li>
-              <a
-                href="#"
-                className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
+              <button
+                className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
+                style={{
+                  height: "3rem",
+                  width: "130px",
+                  marginLeft: "2rem",
+                  paddingLeft: "1rem",
+                }}
               >
-                <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
-                  <i className="bx bx-log-out"></i>
+                <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
+                  Logout
                 </span>
-                <span className="text-sm font-medium">Logout</span>
-              </a>
+              </button>
             </li>
           </ul>
         </div>
-        <div>
-          <section className="text-gray-600 body-font">
-            <div className="container px-5 py-24 mx-auto">
-              <div className="flex flex-wrap -m-4">
-                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                  <a className="block relative h-48 rounded overflow-hidden">
-                    <img
-                      alt="ecommerce"
-                      className="object-cover object-center w-full h-full block"
-                      src="https://dummyimage.com/420x260"
-                    />
-                  </a>
-                  <div className="mt-4">
-                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                      CATEGORY
-                    </h3>
-                    <h2 className="text-gray-900 title-font text-lg font-medium">
-                      The Catalyzer
-                    </h2>
-                    <p className="mt-1">$16.00</p>
-                  </div>
-                </div>
-                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                  <a className="block relative h-48 rounded overflow-hidden">
-                    <img
-                      alt="ecommerce"
-                      className="object-cover object-center w-full h-full block"
-                      src="https://dummyimage.com/421x261"
-                    />
-                  </a>
-                  <div className="mt-4">
-                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                      CATEGORY
-                    </h3>
-                    <h2 className="text-gray-900 title-font text-lg font-medium">
-                      Shooting Stars
-                    </h2>
-                    <p className="mt-1">$21.15</p>
-                  </div>
-                </div>
-                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                  <a className="block relative h-48 rounded overflow-hidden">
-                    <img
-                      alt="ecommerce"
-                      className="object-cover object-center w-full h-full block"
-                      src="https://dummyimage.com/422x262"
-                    />
-                  </a>
-                  <div className="mt-4">
-                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                      CATEGORY
-                    </h3>
-                    <h2 className="text-gray-900 title-font text-lg font-medium">
-                      Neptune
-                    </h2>
-                    <p className="mt-1">$12.00</p>
-                  </div>
-                </div>
-                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                  <a className="block relative h-48 rounded overflow-hidden">
-                    <img
-                      alt="ecommerce"
-                      className="object-cover object-center w-full h-full block"
-                      src="https://dummyimage.com/423x263"
-                    />
-                  </a>
-                  <div className="mt-4">
-                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                      CATEGORY
-                    </h3>
-                    <h2 className="text-gray-900 title-font text-lg font-medium">
-                      The 400 Blows
-                    </h2>
-                    <p className="mt-1">$18.40</p>
-                  </div>
-                </div>
-                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                  <a className="block relative h-48 rounded overflow-hidden">
-                    <img
-                      alt="ecommerce"
-                      className="object-cover object-center w-full h-full block"
-                      src="https://dummyimage.com/424x264"
-                    />
-                  </a>
-                  <div className="mt-4">
-                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                      CATEGORY
-                    </h3>
-                    <h2 className="text-gray-900 title-font text-lg font-medium">
-                      The Catalyzer
-                    </h2>
-                    <p className="mt-1">$16.00</p>
-                  </div>
-                </div>
-                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                  <a className="block relative h-48 rounded overflow-hidden">
-                    <img
-                      alt="ecommerce"
-                      className="object-cover object-center w-full h-full block"
-                      src="https://dummyimage.com/425x265"
-                    />
-                  </a>
-                  <div className="mt-4">
-                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                      CATEGORY
-                    </h3>
-                    <h2 className="text-gray-900 title-font text-lg font-medium">
-                      Shooting Stars
-                    </h2>
-                    <p className="mt-1">$21.15</p>
-                  </div>
-                </div>
-                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                  <a className="block relative h-48 rounded overflow-hidden">
-                    <img
-                      alt="ecommerce"
-                      className="object-cover object-center w-full h-full block"
-                      src="https://dummyimage.com/427x267"
-                    />
-                  </a>
-                  <div className="mt-4">
-                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                      CATEGORY
-                    </h3>
-                    <h2 className="text-gray-900 title-font text-lg font-medium">
-                      Neptune
-                    </h2>
-                    <p className="mt-1">$12.00</p>
-                  </div>
-                </div>
-                <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                  <a
-                    className="block relative h-48 rounded overflow-hidden"
-                    href=""
+        {orphanages == 1 ? (
+          <div>
+            {" "}
+            <section className="text-gray-600 body-font">
+              <div className="container px-5 py-24 mx-auto">
+                <div className="flex flex-wrap -m-4" id="orphanage_cards"></div>
+              </div>
+            </section>
+          </div>
+        ) : (
+          ""
+        )}
+        {profile == 1 ? (
+          <>
+            <section className="text-gray-600 body-font">
+              <div className="container px-5 py-24 mx-auto">
+                <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
+                  <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+                    Welcome, {users[auth.currentUser.uid]["name"]}
+                  </h1>
+                  <p
+                    className="lg:w-1/2 w-full text-gray-500"
+                    style={{ textAlign: "justify" }}
                   >
-                    <img
-                      alt="ecommerce"
-                      className="object-cover object-center w-full h-full block"
-                      src="https://dummyimage.com/428x268"
-                    />
-                  </a>
-                  <div className="mt-4">
-                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                      CATEGORY
-                    </h3>
-                    <h2 className="text-gray-900 title-font text-lg font-medium">
-                      The 400 Blows
-                    </h2>
-                    <p className="mt-1">$18.40</p>
+                    We are so glad to have you as a donor on our platform, you
+                    are doing a great service for the poor people of our
+                    society. You are helping poor people with money and food to
+                    get them back on their feet. We hope that you continue such
+                    amazing work in the future.
+                  </p>
+                </div>
+                <div className="flex flex-wrap -m-4 ">
+                  <div
+                    className="xl:w-1/3 md:w-1 p-4 shadow-xl overflow-hidden rounded"
+                    style={{ height: "226px" }}
+                  >
+                    <div
+                      className="border border-gray-200 p-6 rounded-lg"
+                      style={{ height: "210px" }}
+                    >
+                      <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
+                        <FaUserAlt
+                          style={{ width: "1.5rem", height: "1.5rem" }}
+                        />
+                      </div>
+                      <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
+                        {users[auth.currentUser.uid]["name"]}
+                      </h2>
+                      <p className="leading-relaxed text-base">
+                        Email: {users[auth.currentUser.uid]["email"]}
+                      </p>
+                      <p className="leading-relaxed text-base">
+                        Phone: {users[auth.currentUser.uid]["phone"]}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="xl:w-2/3 md:w-1 p-4">
+                    <Graph info={chartData} style={{ height: "194px" }} />
+                  </div>
+                </div>
+                <div
+                  className="bg-white p-8 rounded-md w-full my-auto"
+                  style={{ marginTop: "2rem" }}
+                >
+                  <div className=" flex items-center justify-between pb-6">
+                    <div>
+                      <h2 className="text-gray-600 font-semibold">
+                        Tabular Data
+                      </h2>
+                      <span className="text-xs">All donations till now</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                      <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                        <table className="min-w-full leading-normal">
+                          <thead>
+                            <tr>
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Orphanage Name
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Donated Amount
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Donation time
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody id="table-data">
+                            {/* {user_donation.map((donation) => (
+                              <tr>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <div className="flex items-center">
+                                    <div className="flex-shrink-0 w-10 h-10">
+                                      <img
+                                        className="w-full h-full rounded-full"
+                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="ml-3">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {donation.orphanage}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {donation.amount}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    Jan 21, 2020
+                                  </p>
+                                </td>
+                              </tr>
+                            ))} */}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-        </div>
+            </section>
+          </>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

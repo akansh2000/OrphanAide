@@ -3,3 +3,4 @@ Email verification
 from dashboard page, if we remove /Dashboard
 Header footer in signup login ? If not then add back button in login and signup
 Side Nav not responsive in dashboard
+Double click on Orphanage and Profile button
