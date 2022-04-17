@@ -380,44 +380,48 @@ function loadUserProfile() {
     const container = document.getElementById("table-data");
     container.innerHTML = "";
 
-    for (let i = 1; i < data.length; i++) {
-      const date = new Date(data[i].time);
-      var time = date.toLocaleString("en-US");
-      var month = time.split("/")[0];
-      var month_int = parseInt(month);
-      chart_data.chartData["data"][month_int - 1] += parseInt(data[i].amount);
-    }
+    if (data != null) {
+      for (let i = 1; i < data.length; i++) {
+        const date = new Date(data[i].time);
+        var time = date.toLocaleString("en-US");
+        var month = time.split("/")[0];
+        var month_int = parseInt(month);
+        chart_data.chartData["data"][month_int - 1] += parseInt(data[i].amount);
+      }
 
-    for (let idx = 1; idx < data.length; idx++) {
-      const date = new Date(data[idx].time);
-      str1 += `<tr>
-      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 w-10 h-10">
-            <img
-              class="w-full h-full rounded-full"
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-              alt=""
-            />
+      for (let idx = 1; idx < data.length; idx++) {
+        const date = new Date(data[idx].time);
+        str1 += `<tr>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 w-10 h-10">
+              <img
+                class="w-full h-full rounded-full"
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                alt=""
+              />
+            </div>
+            <div class="ml-3">
+              <p class="text-gray-900 whitespace-no-wrap">
+                ${data[idx].orphanage}
+              </p>
+            </div>
           </div>
-          <div class="ml-3">
-            <p class="text-gray-900 whitespace-no-wrap">
-              ${data[idx].orphanage}
-            </p>
-          </div>
-        </div>
-      </td>
-      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p class="text-gray-900 whitespace-no-wrap">
-          ${data[idx].amount}
-        </p>
-      </td>
-      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p class="text-gray-900 whitespace-no-wrap">
-        ${date.toDateString()}
-        </p>
-      </td>
-    </tr>`;
+        </td>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <p class="text-gray-900 whitespace-no-wrap">
+            ${data[idx].amount}
+          </p>
+        </td>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <p class="text-gray-900 whitespace-no-wrap">
+          ${date.toDateString()}
+          </p>
+        </td>
+      </tr>`;
+      }
+    } else {
+      str1 = `<div style="width: 240%; text-align: center; margin-top: 1rem;"><h1 style="color: black; font-size: 18px; padding-bottom: 15px;">No donations till now.</h1></div>`;
     }
     container.innerHTML = str1;
   });
