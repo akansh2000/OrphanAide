@@ -1,19 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { donationToOrphanage } from "../../Firebase";
 
-export default function Dummy_dashboard() {
-  const navigate = useNavigate();
+import { React } from "react";
 
-  setTimeout(function () {
-    navigate("/Dashboard");
-  }, 5000);
+import { Link } from "react-router-dom";
 
-  useEffect(() => {
-    let amount = localStorage.getItem("amount");
-    donationToOrphanage(amount);
-    localStorage.removeItem("amount");
-  }, []);
+export default function AskWhichUser() {
 
   return (
     <>
@@ -22,7 +12,7 @@ export default function Dummy_dashboard() {
           className="lg:flex w-1/2 hidden  bg-no-repeat bg-cover relative items-center"
           style={{
             backgroundImage:
-              "url(https://i.pinimg.com/550x/98/c6/9a/98c69a66353a76217b371490bd085528.jpg)",
+              "url(https://images.pexels.com/photos/764681/pexels-photo-764681.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260)",
           }}
         >
           <div className="absolute bg-black opacity-60 inset-0 z-0"></div>
@@ -31,14 +21,13 @@ export default function Dummy_dashboard() {
               className="text-5xl font-bold text-left tracking-wide"
               style={{ fontWeight: "500", fontSize: "3.5rem" }}
             >
-              Bringing Happiness!
+              All for a Smile
             </h1>
             <p
               className="text-3xl my-4"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              Your donation will help in creating a bright future. Hope you have
-              a nice day!
+              We aim at giving them everything they deserve.
             </p>
           </div>
         </div>
@@ -52,18 +41,37 @@ export default function Dummy_dashboard() {
             className="absolute lg:hidden z-10 inset-0 bg-gray-500 bg-no-repeat bg-cover items-center"
             style={{
               backgroundImage:
-                "url(https://images.squarespace-cdn.com/content/v1/5005cf7684ae9eec4f9d1861/1518547038540-R8GB0LAXMIV2HJDHRX1F/team.jpg?format=1000w)",
+                "url(https://images.pexels.com/photos/764681/pexels-photo-764681.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260)",
             }}
           >
             <div className="absolute bg-black opacity-60 inset-0 z-0"></div>
           </div>
           <div className="w-full py-6 z-20">
             <h1
-              className="my-10 text-9xl mb-20"
+              className="my-6 text-7xl mb-20"
               style={{ fontFamily: "'Dancing Script', cursive" }}
             >
-              Thank You!
+              OrphanAide
             </h1>
+            
+            <Link to="/Login">
+              <div className="px-4 pb-2 pt-4" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                  <button
+                    type="submit"
+                    className="uppercase block w-2/3 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
+                  >
+                    Sign In as a User
+                  </button>
+
+              </div>
+            </Link>
+              <Link to="/LoginOrphanage">
+                <div className="px-4 pb-2 pt-4"  style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                  <button className="uppercase block w-2/3 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
+                    Sign In as a Orphanage
+                  </button>
+                </div>
+              </Link>
           </div>
         </div>
       </section>
