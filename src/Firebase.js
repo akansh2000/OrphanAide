@@ -892,8 +892,28 @@ const HandleLoginFirebaseOrphanage = (navigate, id, email, password) => {
         });
       } else {
         if (val.email === email && val.password === password) {
-          localStorage.setItem("Bearer", "Hello");
-          navigate("/Dashboard");
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              // window.alert("Signed in!");
+              console.log(auth.currentUser.accessToken);
+              if (!auth.currentUser.emailVerified) {
+                window.alert("Verify your email!");
+              } else {
+                set(ref(db, "token/" + auth.currentUser.uid), {
+                  token: auth.currentUser.accessToken,
+                }).catch((error) => {
+                  window.alert(error.message);
+                });
+
+                localStorage.setItem("Bearer", auth.currentUser.accessToken);
+                navigate("/Dashboard");
+              }
+              // ...
+            })
+            .catch((error) => {
+              const errorMessage = error.message;
+              window.alert(errorMessage);
+            });
         } else {
           alert("Incorrect Email or Password");
         }
