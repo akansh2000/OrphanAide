@@ -16,13 +16,7 @@ import {
   getDownloadURL,
   listAll,
 } from "firebase/storage";
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue,
-  DataSnapshot,
-} from "firebase/database";
+import { getDatabase, ref, set, onValue } from "firebase/database";
 
 const firebaseConfig = {
   //.
@@ -158,25 +152,129 @@ function writeUserData(userId, name, email, phone) {
   });
 }
 
+function compare(a, b) {
+  if (a.time < b.time) {
+    return 1;
+  }
+  if (a.time > b.time) {
+    return -1;
+  }
+  return 0;
+}
+
+function acceptOrphanage(id) {
+  let val = localStorage.getItem("AcceptRequest");
+  console.log(id);
+}
+
+function rejectOrphanage() {
+  console.log("reject");
+}
+function loadReviewRequest() {
+  const container = document.getElementById("tableReviewRequest");
+  container.innerHTML = "";
+  let str1 = "";
+  let i = 0;
+  const reviewRef = ref(db, "review/");
+  onValue(reviewRef, (snapshot) => {
+    snapshot.forEach(function (childSnapshot) {
+      var childData = childSnapshot.val();
+
+      console.log(childData);
+      i++;
+      str1 += ` <tr class="text-gray-700">
+      <td class="px-4 py-3 border">
+        <div class="flex items-center text-sm">
+          <div>
+            <p>${childData.id}</p>
+          </div>
+        </div>
+      </td>
+      <td class="px-4 py-3 border text-md ">${childData.name}</td>
+      <td class="px-4 py-3 border text-md ">${childData.email}</td>
+      <td class="px-4 py-3 border text-md ">${childData.address}</td>
+      <td class="px-4 py-3 border text-md ">${childData.state}</td>
+      <td class="px-4 py-3 border text-md ">${childData.phone}</td>
+      <td class="px-4 py-3 border text-sm">
+      <a href = "/acceptRequest" id = "${
+        childData.id
+      }" onClick={acceptOrphanage(e.target.id)} class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">Approve</a>
+      <a href = "/rejectRequest" id = "reject${i}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded" onclick="${localStorage.setItem(
+        "DenyRequest",
+        childData.id
+      )}">Deny</button>
+      </td>
+    </tr>`;
+    });
+    container.innerHTML = str1;
+  });
+}
+
 function allUserDonationDetails() {
   let arr = [];
+  const container = document.getElementById("table-dataUser");
+  container.innerHTML = "";
+  let str1 = "";
+
   const donationRef = ref(db, "donations/");
   onValue(donationRef, (snapshot) => {
     snapshot.forEach(function (childSnapshot) {
-      //console.log(childSnapshot.key + "venjidgner");
       var childData = childSnapshot.val();
-      //console.log(childData);
+      let obj = {
+        amount: 0,
+        time: 0,
+        id: childSnapshot.key,
+      };
       for (let i = 1; i < childData.length; i++) {
-        let obj = {
-          amount: childData[i].amount,
-          orphanage: childData[i].orphanage,
-          time: childData[i].time,
-          id: childSnapshot.key,
-        };
-        arr.push(obj);
+        obj.amount += parseInt(childData[i].amount);
+        obj.time = childData[i].time;
       }
+
+      arr.push(obj);
     });
+
+    console.log(arr);
+    arr.sort(compare);
+
+    for (let idx = 0; idx < arr.length; idx++) {
+      let username = "";
+      let str2 = "";
+      const userRef = ref(db, "users/" + arr[idx].id);
+
+      onValue(userRef, (snapshot) => {
+        username = snapshot.val().name;
+        str2 += username;
+      });
+
+      console.log(str2);
+
+      const date = new Date(arr[idx].time);
+      str1 += `<tr>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <div class="flex items-center">
+            <div class="ml-3">
+              <p class="text-gray-900 whitespace-no-wrap">
+                ${str2}
+              </p>
+            </div>
+          </div>
+        </td>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <p class="text-gray-900 whitespace-no-wrap">
+          ₹ ${arr[idx].amount}
+          </p>
+        </td>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <p class="text-gray-900 whitespace-no-wrap">
+          ${date.toDateString()}
+          </p>
+        </td>
+      </tr>`;
+    }
+    container.innerHTML = str1;
   });
+
+  console.log(arr);
 }
 
 function getOrphanageDataProfile(name) {
@@ -794,8 +892,28 @@ const HandleLoginFirebaseOrphanage = (navigate, id, email, password) => {
         });
       } else {
         if (val.email === email && val.password === password) {
-          localStorage.setItem("Bearer", "Hello");
-          navigate("/Dashboard");
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              // window.alert("Signed in!");
+              console.log(auth.currentUser.accessToken);
+              if (!auth.currentUser.emailVerified) {
+                window.alert("Verify your email!");
+              } else {
+                set(ref(db, "token/" + auth.currentUser.uid), {
+                  token: auth.currentUser.accessToken,
+                }).catch((error) => {
+                  window.alert(error.message);
+                });
+
+                localStorage.setItem("Bearer", auth.currentUser.accessToken);
+                navigate("/Dashboard");
+              }
+              // ...
+            })
+            .catch((error) => {
+              const errorMessage = error.message;
+              window.alert(errorMessage);
+            });
         } else {
           alert("Incorrect Email or Password");
         }
@@ -915,4 +1033,7 @@ export {
   loadDashboardOrphanage,
   loadUserProfile,
   chart_data,
+  loadReviewRequest,
+  acceptOrphanage,
+  rejectOrphanage,
 };
