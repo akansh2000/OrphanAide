@@ -22,6 +22,42 @@ export default function SignupOrphanage() {
     setLoaded(true);
   };
 
+  let states = [
+    "Andaman and Nicobar",
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chandigarh",
+    "Chhattisgarh",
+    "Delhi",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jammu and Kashmir",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Mizoram",
+    "Nagaland",
+    "Orissa",
+    "Puducherry",
+    "Punjab",
+    "Rajasthan",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal",
+  ];
+
+  // const [state, setState] = useState("");
+
+
   return (
     <>
       <section className="min-h-screen flex items-stretch text-white ">
@@ -110,7 +146,7 @@ export default function SignupOrphanage() {
                   onChange={(event) => setAddress(event.target.value)}
                 />
               </div>
-              <div className="pb-2 pt-4">
+              {/* <div className="pb-2 pt-4">
                 <input
                   type="text"
                   name="name"
@@ -120,6 +156,24 @@ export default function SignupOrphanage() {
                   required
                   onChange={(event) => setOrphanageState(event.target.value)}
                 />
+              </div> */}
+              <div className="pb-2 pt-4">
+                <input
+                  type="search"
+                  name="search"
+                  placeholder="Enter state"
+                  className="block w-full p-4 text-lg rounded-sm bg-black"
+                  list="states"
+                  id="input_state"
+                  onChange={(e) => {
+                    setOrphanageState(e.target.value);
+                  }}
+                />
+                <datalist id="states">
+                  {states.map((state) => (
+                    <option value={state} />
+                  ))}
+                </datalist>
               </div>
               <div className="pb-2 pt-4">
                 <input

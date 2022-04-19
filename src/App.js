@@ -24,10 +24,16 @@ const SpecificOrphanage = lazy(() =>
   import("./components/SpecificOrphanage/SpecificOrphanage")
 );
 const News = lazy(() => import("./components/News/News"));
+const ReviewRequests = lazy(() =>
+  import("./components/ReviewRequests/ReviewRequests")
+);
 const AllUsersDonation = lazy(() =>
   import("./components/AllUsersDonation/AllUsersDonation")
 );
 const LoginOrphanage = lazy(() => import("./components/Login/LoginOrphanage"));
+const AcceptRequest = lazy(() =>
+  import("./components/ReviewRequests/AcceptRequest")
+);
 const ForgotPassword = lazy(() =>
   import("./components/ForgotPassword/ForgotPassword")
 );
@@ -63,6 +69,8 @@ function App() {
               element={<AllUsersDonation />}
             />
             <Route exact path="/Thank" element={<Thank />} />
+            <Route exact path="/AcceptRequest" element={<AcceptRequest />} />
+            <Route exact path="/ReviewRequests" element={<ReviewRequests />} />
             <Route exact path="/Payment" element={<Payment />} />
             <Route exact path="/Login" element={<Login />} />
             <Route exact path="/LoginOrphanage" element={<LoginOrphanage />} />

@@ -2,7 +2,9 @@ import { FaUserAlt } from "react-icons/fa";
 import logo from "../images/logo1.png";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
-import { allUserDonationDetails } from "../../Firebase";
+import {
+    allUserDonationDetails,
+  } from "../../Firebase";
 export default function Dummy_dashboard() {
   const [isOpen, setIsOpen] = useState(false);
 
