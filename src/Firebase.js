@@ -460,23 +460,124 @@ function donationToOrphanage(amount) {
   });
 }
 
-function loadDashboardOrphanage() {
-  const databaseRef = ref(db, "orphanage/");
-  const storage = getStorage();
-  onValue(databaseRef, (snapshot) => {
-    let data = snapshot.val();
-    const container = document.getElementById("orphanage_cards");
-    container.innerHTML = "";
+// function loadSpecificDashboardOrphanage(state) {
+//   const databaseRef = ref(db, "orphanage/");
+//   const storage = getStorage();
+//   onValue(databaseRef, (snapshot) => {
+//     let data = snapshot.val();
+//     const container = document.getElementById("orphanage_cards");
+//     let fetchedOrphanage = [];
 
-    for (let idx = 0; idx < data.length; idx++) {
-      const pathReference = sRef(storage, data[idx].name);
-      listAll(pathReference)
-        .then((res) => {
-          let itemRef = res.items[0];
-          getDownloadURL(itemRef).then((url) => {
-            const card = document.createElement("div");
-            card.classList = "card-body";
-            const content2 = ` <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
+//     for (var i = 0; i < data.length; i++) {
+//       if (data[i].state === state) {
+//         fetchedOrphanage.push(data[i]);
+//       }
+//     }
+//     container.innerHTML = "";
+
+//     for (let idx = 0; idx < fetchedOrphanage.length; idx++) {
+//       const pathReference = sRef(storage, fetchedOrphanage[idx].name);
+//       listAll(pathReference)
+//         .then((res) => {
+//           let itemRef = res.items[0];
+//           getDownloadURL(itemRef).then((url) => {
+//             const card = document.createElement("div");
+//             card.classList = "card-body";
+//             const content2 = ` <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
+//               <a class="block relative h-48 rounded overflow-hidden">
+//                 <img
+//                   alt="ecommerce"
+//                   class="object-cover object-center w-full h-full block"
+//                   src="${url}"
+//                 />
+//               </a>
+//               <div class="mt-4">
+//                 <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
+//                   Current Condition: ${fetchedOrphanage[idx].current_condition}
+//                 </h3>
+//                 <h2 class="text-gray-900 title-font text-lg font-medium">
+//                 ${fetchedOrphanage[idx].name}
+//                 </h2>
+//                 <p class="mt-1">${fetchedOrphanage[idx].address}</p>
+//               </div>
+//             </div>`;
+
+//             container.innerHTML += content2;
+//           });
+//         })
+//         .catch((error) => {});
+//     }
+//     console.log(fetchedOrphanage);
+//   });
+//   console.log(state);
+// }
+
+function loadDashboardOrphanage(state) {
+  if (state == null || state == "") {
+    const databaseRef = ref(db, "orphanage/");
+    const storage = getStorage();
+    onValue(databaseRef, (snapshot) => {
+      let data = snapshot.val();
+      const container = document.getElementById("orphanage_cards");
+      container.innerHTML = "";
+
+      for (let idx = 0; idx < data.length; idx++) {
+        const pathReference = sRef(storage, data[idx].name);
+        listAll(pathReference)
+          .then((res) => {
+            let itemRef = res.items[0];
+            getDownloadURL(itemRef).then((url) => {
+              const card = document.createElement("div");
+              card.classList = "card-body";
+              const content2 = ` <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
+                <a class="block relative h-48 rounded overflow-hidden">
+                  <img
+                    alt="ecommerce"
+                    class="object-cover object-center w-full h-full block"
+                    src="${url}"
+                  />
+                </a>
+                <div class="mt-4">
+                  <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
+                    Current Condition: ${data[idx].current_condition}
+                  </h3>
+                  <h2 class="text-gray-900 title-font text-lg font-medium">
+                  ${data[idx].name}
+                  </h2>
+                  <p class="mt-1">${data[idx].address}</p>
+                </div>
+              </div>`;
+
+              container.innerHTML += content2;
+            });
+          })
+          .catch((error) => {});
+      }
+    });
+  } else {
+    const databaseRef = ref(db, "orphanage/");
+    const storage = getStorage();
+    onValue(databaseRef, (snapshot) => {
+      let data = snapshot.val();
+      const container = document.getElementById("orphanage_cards");
+      let fetchedOrphanage = [];
+
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].state === state) {
+          fetchedOrphanage.push(data[i]);
+        }
+      }
+      container.innerHTML = "";
+
+      for (let idx = 0; idx < fetchedOrphanage.length; idx++) {
+        const pathReference = sRef(storage, fetchedOrphanage[idx].name);
+        listAll(pathReference)
+          .then((res) => {
+            let itemRef = res.items[0];
+            getDownloadURL(itemRef).then((url) => {
+              const card = document.createElement("div");
+              card.classList = "card-body";
+              const content2 = ` <div class="lg:w-1/2 md:w-1 p-4 w-full">
               <a class="block relative h-48 rounded overflow-hidden">
                 <img
                   alt="ecommerce"
@@ -486,21 +587,23 @@ function loadDashboardOrphanage() {
               </a>
               <div class="mt-4">
                 <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
-                  Current Condition: ${data[idx].current_condition}
+                  Current Condition: ${fetchedOrphanage[idx].current_condition}
                 </h3>
                 <h2 class="text-gray-900 title-font text-lg font-medium">
-                ${data[idx].name}
+                ${fetchedOrphanage[idx].name}
                 </h2>
-                <p class="mt-1">${data[idx].address}</p>
+                <p class="mt-1">${fetchedOrphanage[idx].address}</p>
               </div>
             </div>`;
 
-            container.innerHTML += content2;
-          });
-        })
-        .catch((error) => {});
-    }
-  });
+              container.innerHTML += content2;
+            });
+          })
+          .catch((error) => {});
+      }
+      console.log(fetchedOrphanage);
+    });
+  }
 }
 
 let chart_data = [];
@@ -536,37 +639,41 @@ function loadUserProfile() {
     const container = document.getElementById("table-data");
     container.innerHTML = "";
 
-    for (let i = 1; i < data.length; i++) {
-      const date = new Date(data[i].time);
-      var time = date.toLocaleString("en-US");
-      var month = time.split("/")[0];
-      var month_int = parseInt(month);
-      chart_data.chartData["data"][month_int - 1] += parseInt(data[i].amount);
-    }
+    if (data != null) {
+      for (let i = 1; i < data.length; i++) {
+        const date = new Date(data[i].time);
+        var time = date.toLocaleString("en-US");
+        var month = time.split("/")[0];
+        var month_int = parseInt(month);
+        chart_data.chartData["data"][month_int - 1] += parseInt(data[i].amount);
+      }
 
-    for (let idx = 1; idx < data.length; idx++) {
-      const date = new Date(data[idx].time);
-      str1 += `<tr>
-      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <div class="flex items-center">
-          <div class="ml-3">
-            <p class="text-gray-900 whitespace-no-wrap">
-              ${data[idx].orphanage}
-            </p>
+      for (let idx = 1; idx < data.length; idx++) {
+        const date = new Date(data[idx].time);
+        str1 += `<tr>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <div class="flex items-center">
+            <div class="ml-3">
+              <p class="text-gray-900 whitespace-no-wrap">
+                ${data[idx].orphanage}
+              </p>
+            </div>
           </div>
-        </div>
-      </td>
-      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p class="text-gray-900 whitespace-no-wrap">
-          ${data[idx].amount}
-        </p>
-      </td>
-      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p class="text-gray-900 whitespace-no-wrap">
-        ${date.toDateString()}
-        </p>
-      </td>
-    </tr>`;
+        </td>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <p class="text-gray-900 whitespace-no-wrap">
+            ${data[idx].amount}
+          </p>
+        </td>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <p class="text-gray-900 whitespace-no-wrap">
+          ${date.toDateString()}
+          </p>
+        </td>
+      </tr>`;
+      }
+    } else {
+      str1 = `<div style="width: 240%; text-align: center; margin-top: 1rem;"><h1 style="color: black; font-size: 18px; padding-bottom: 15px;">No donations till now.</h1></div>`;
     }
     container.innerHTML = str1;
   });
@@ -785,6 +892,7 @@ const HandleLoginFirebaseOrphanage = (navigate, id, email, password) => {
         });
       } else {
         if (val.email === email && val.password === password) {
+          localStorage.setItem("Bearer", "Hello");
           navigate("/Dashboard");
         } else {
           alert("Incorrect Email or Password");

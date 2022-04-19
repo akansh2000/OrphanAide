@@ -1,9 +1,9 @@
-
 import { React } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AskWhichUser() {
+  let navigate = useNavigate();
 
   return (
     <>
@@ -53,25 +53,44 @@ export default function AskWhichUser() {
             >
               OrphanAide
             </h1>
-            
-            <Link to="/Login">
-              <div className="px-4 pb-2 pt-4" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-                  <button
-                    type="submit"
-                    className="uppercase block w-2/3 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                  >
-                    Sign In as a User
-                  </button>
 
-              </div>
-            </Link>
-              <Link to="/LoginOrphanage">
-                <div className="px-4 pb-2 pt-4"  style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-                  <button className="uppercase block w-2/3 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
-                    Sign In as a Orphanage
-                  </button>
-                </div>
-              </Link>
+            <div
+              className="px-4 pb-2 pt-4"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <button
+                className="uppercase block w-2/3 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
+                onClick={() => {
+                  localStorage.setItem("LogInAs", "user");
+                  navigate("/Login");
+                }}
+              >
+                Sign In as a User
+              </button>
+            </div>
+
+            <div
+              className="px-4 pb-2 pt-4"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <button
+                className="uppercase block w-2/3 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
+                onClick={() => {
+                  localStorage.setItem("LogInAs", "orphanage");
+                  navigate("/LoginOrphanage");
+                }}
+              >
+                Sign In as a Orphanage
+              </button>
+            </div>
           </div>
         </div>
       </section>
