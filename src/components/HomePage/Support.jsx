@@ -54,7 +54,7 @@ const Support = () => {
                   </a>
 
                   <a
-                    href="/Login"
+                    href="/AskWhichUser"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
@@ -147,7 +147,7 @@ const Support = () => {
                 </a>
 
                 <a
-                  href="/Login"
+                  href="/AskWhichUser"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                   style={{ fontSize: "15px", letterSpacing: "3px" }}
                 >
@@ -193,22 +193,15 @@ const Support = () => {
               className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
               style={{ letterSpacing: "3px" }}
             >
-              MISSION
+              FOCUS
             </h1>
             <p
               className="mb-8"
               style={{ textAlign: "justify", lineHeight: "30px" }}
             >
-              OrphanAide envisions a future free of poverty, where everyone has
-              the freedom and opportunity to seek happiness and reach their full
-              potential. OrphanAide believes in development rather than
-              assistance, because development at the grassroots level helps
-              individuals to realise their own potential and break the poverty
-              cycle. Ignorance enslaves people; education liberates them. Every
-              individual has the right to self-sufficiency and control over
-              their own future. OrphanAide welcomes people of all ages,
-              ethnicities, nations, faiths, genders, sexual orientations, and
-              socioeconomic circumstances.
+              OrphanAide focuses on benefitting the children in the orphanages. It is built with the purpose of giving each child an equal opportunity in this world. 
+              By donating to orphanages, you're not only helping the children in need, but also contributing to the future of your country. At OrphanAide, we give people the ability to donate directly to orphanages and 
+              relief efforts. We think you small donation can make these children go a long way.
             </p>
           </div>
           <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
@@ -237,21 +230,17 @@ const Support = () => {
               className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
               style={{ letterSpacing: "3px" }}
             >
-              OUR STRATEGIES
+              COMMUNITY
             </h1>
             <p
               className="mb-8"
               style={{ textAlign: "justify", lineHeight: "30px" }}
             >
-              OrphanAide thinks that by combining a variety of innovative but
-              practical tactics, it can effectively teach orphans: Construct and
-              support orphan schools that are self-sustaining and focused on
-              educational achievement and leadership. Ensure orphans have a
-              secure place to live and flourish. Educate them on how to stay
-              healthy. Collaborate with grassroots non-profits in your
-              community. Collaborate with non-profit organisations from across
-              the world. Maintain good contacts with local governments and
-              communities.
+
+              OrphanAide thinks that community is the most important part of our project. We are happy to bring money and help to orphans who need it.
+              With a donation to an orphanage, you are helping children who would otherwise have no opportunity in life.
+              In addition, the orphanages offer great opportunities for tourists to see what is going on inside and give back to these wonderful children.
+
             </p>
           </div>
         </div>

@@ -145,14 +145,6 @@ const Program = () => {
                 </a>
 
                 <a
-                  href="/Donate"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
-                  style={{ fontSize: "15px", letterSpacing: "3px" }}
-                >
-                  Donate
-                </a>
-
-                <a
                   href="/AskWhichUser"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                   style={{ fontSize: "15px", letterSpacing: "3px" }}
