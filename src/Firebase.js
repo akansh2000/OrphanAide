@@ -170,6 +170,7 @@ function acceptOrphanage(id) {
 function rejectOrphanage() {
   console.log("reject");
 }
+
 function loadReviewRequest() {
   const container = document.getElementById("tableReviewRequest");
   container.innerHTML = "";
@@ -226,6 +227,7 @@ function allUserDonationDetails() {
         id: childSnapshot.key,
       };
       for (let i = 1; i < childData.length; i++) {
+        console.log(childData[i]);
         obj.amount += parseInt(childData[i].amount);
         obj.time = childData[i].time;
       }
@@ -397,7 +399,28 @@ function donationToOrphanage(amount) {
 
       const refDon = ref(db, "donations/" + uid);
       let k = 0;
-      let name = localStorage.getItem("Orphanage Name");
+
+      let idOrphanageItem = localStorage.getItem("idOrphanage");
+
+      const reft = ref(db, "orphanage/" + idOrphanageItem);
+      let j = 0;
+      let nameOrph = "";
+
+      onValue(reft, (snapshot) => {
+        const data = snapshot.val();
+        let val = data;
+        nameOrph = val.name;
+        // let idx = data.indexOf(val);
+        console.log(nameOrph);
+        console.log(data);
+        j++;
+        if (j === 1) {
+          val.donation += parseInt(amount);
+          set(ref(db, "orphanage/" + idOrphanageItem), val).catch((error) => {
+            window.alert(error.message);
+          });
+        }
+      });
 
       onValue(refDon, (snapshot) => {
         let donationsArr = [];
@@ -408,7 +431,7 @@ function donationToOrphanage(amount) {
             let obj = {
               amount: amount,
               time: new Date().getTime(),
-              orphanage: name,
+              orphanage: nameOrph,
             };
 
             set(ref(db, "donations/" + uid + "/" + 1), obj).catch((error) => {
@@ -424,7 +447,7 @@ function donationToOrphanage(amount) {
             let obj = {
               amount: amount,
               time: new Date().getTime(),
-              orphanage: localStorage.getItem("Orphanage Name"),
+              orphanage: nameOrph,
             };
 
             console.log(obj);
@@ -436,24 +459,6 @@ function donationToOrphanage(amount) {
               }
             );
           }
-        }
-      });
-
-      const reft = ref(db, "orphanage/");
-      let j = 0;
-
-      onValue(reft, (snapshot) => {
-        const data = snapshot.val();
-        let val = data.find((c) => c.name === name);
-        let idx = data.indexOf(val);
-        console.log(val);
-        console.log(data);
-        j++;
-        if (j === 1) {
-          val.donation += parseInt(amount);
-          set(ref(db, "orphanage/" + idx), val).catch((error) => {
-            window.alert(error.message);
-          });
         }
       });
     }
@@ -512,7 +517,7 @@ function donationToOrphanage(amount) {
 //   console.log(state);
 // }
 
-function loadDashboardOrphanage(state) {
+function loadDashboardOrphanage(state, navigate) {
   if (state == null || state == "") {
     const databaseRef = ref(db, "orphanage/");
     const storage = getStorage();
@@ -520,7 +525,6 @@ function loadDashboardOrphanage(state) {
       let data = snapshot.val();
       const container = document.getElementById("orphanage_cards");
       container.innerHTML = "";
-
       for (let idx = 0; idx < data.length; idx++) {
         const pathReference = sRef(storage, data[idx].name);
         listAll(pathReference)
@@ -537,7 +541,9 @@ function loadDashboardOrphanage(state) {
                     src="${url}"
                   />
                 </a>
-                <div class="mt-4">
+                <a class="mt-4" href="/SpecificOrphanage" onClick="(function(){
+                  localStorage.setItem('idOrphanage',${idx});
+              })();">
                   <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
                     Current Condition: ${data[idx].current_condition}
                   </h3>
@@ -545,7 +551,7 @@ function loadDashboardOrphanage(state) {
                   ${data[idx].name}
                   </h2>
                   <p class="mt-1">${data[idx].address}</p>
-                </div>
+                </a>
               </div>`;
 
               container.innerHTML += content2;
@@ -561,15 +567,18 @@ function loadDashboardOrphanage(state) {
       let data = snapshot.val();
       const container = document.getElementById("orphanage_cards");
       let fetchedOrphanage = [];
+      let ids = [];
 
       for (var i = 0; i < data.length; i++) {
         if (data[i].state === state) {
           fetchedOrphanage.push(data[i]);
+          ids.push(i);
         }
       }
       container.innerHTML = "";
 
       for (let idx = 0; idx < fetchedOrphanage.length; idx++) {
+        let id = ids[idx];
         const pathReference = sRef(storage, fetchedOrphanage[idx].name);
         listAll(pathReference)
           .then((res) => {
@@ -585,7 +594,9 @@ function loadDashboardOrphanage(state) {
                   src="${url}"
                 />
               </a>
-              <div class="mt-4">
+              <a class="mt-4" href="/SpecificOrphanage" onClick="(function(){
+                localStorage.setItem('idOrphanage',${id});
+            })();">
                 <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
                   Current Condition: ${fetchedOrphanage[idx].current_condition}
                 </h3>
@@ -593,7 +604,7 @@ function loadDashboardOrphanage(state) {
                 ${fetchedOrphanage[idx].name}
                 </h2>
                 <p class="mt-1">${fetchedOrphanage[idx].address}</p>
-              </div>
+              </a>
             </div>`;
 
               container.innerHTML += content2;
@@ -740,7 +751,7 @@ function loadNewsData() {
   });
 }
 
-function loadOrphanageTitle(name) {
+function loadOrphanageTitle(id) {
   let orphanageName = document.querySelector("#orphanageName");
   let orphanageState = document.querySelector("#orphanageState");
   let contactnoOrphanage = document.querySelector("#contactnoOrphanage");
@@ -753,11 +764,11 @@ function loadOrphanageTitle(name) {
   let addressOrphanage = document.querySelector("#addressOrphanage");
   let donationrecieved = document.querySelector("#donationrecieved");
 
-  const reference = ref(db, "orphanage/");
+  const reference = ref(db, "orphanage/" + id);
   onValue(reference, (snapshot) => {
     const data = snapshot.val();
     console.log(data);
-    let val = data.find((c) => c.name === name);
+    let val = data;
     // console.log(orphanageName);
     // console.log(val.name);
     orphanageName.innerHTML = val.name;
