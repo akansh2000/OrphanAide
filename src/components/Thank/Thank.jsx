@@ -65,7 +65,7 @@ export default function Thank() {
   }, 5000);
 
   let user_donation = [];
-
+  let z = 0;
   useEffect(() => {
     let amount = localStorage.getItem("amount");
     donationToOrphanage(amount);
@@ -74,14 +74,17 @@ export default function Thank() {
       if (user) {
         const databaseRef_user = ref(db, "donations/" + user.uid);
         onValue(databaseRef_user, (snapshot) => {
+          z++;
           const data = snapshot.val();
-          user_donation = data;
           // console.log(user_donation[user_donation.length - 1]);
-          generatePDF(
-            user.displayName,
-            user_donation[user_donation.length - 1].amount,
-            user_donation[user_donation.length - 1].orphanage
-          );
+          if(z==2){
+            generatePDF(
+              user.displayName,
+              data[data.length - 1].amount,
+              data[data.length - 1].orphanage
+            );
+
+          }
         });
       } else {
         alert("User not found");

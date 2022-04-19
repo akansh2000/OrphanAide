@@ -48,7 +48,7 @@ export default function Dummy_dashboard() {
 
   useEffect(() => {
     componentDidUpdate();
-    loadDashboardOrphanage();
+    loadDashboardOrphanage("", navigate);
     const databaseRef_user = ref(db, "users/");
     onValue(databaseRef_user, (snapshot) => {
       const data = snapshot.val();

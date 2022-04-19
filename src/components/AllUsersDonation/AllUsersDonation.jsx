@@ -49,7 +49,7 @@ export default function Dummy_dashboard() {
                   </a>
 
                   <a
-                    href="/Payment"
+                    href="/Team"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
@@ -62,14 +62,6 @@ export default function Dummy_dashboard() {
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
                     News
-                  </a>
-
-                  <a
-                    href="/SpecificOrphanage"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
-                    style={{ fontSize: "15px", letterSpacing: "3px" }}
-                  >
-                    Donate
                   </a>
                 </div>
               </div>
@@ -142,7 +134,7 @@ export default function Dummy_dashboard() {
                 </a>
 
                 <a
-                  href="#"
+                  href="/Team"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                   style={{ fontSize: "15px", letterSpacing: "3px" }}
                 >
@@ -155,14 +147,6 @@ export default function Dummy_dashboard() {
                   style={{ fontSize: "15px", letterSpacing: "3px" }}
                 >
                   News
-                </a>
-
-                <a
-                  href="/SpecificOrphanage"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
-                  style={{ fontSize: "15px", letterSpacing: "3px" }}
-                >
-                  Donate
                 </a>
               </div>
             </div>
@@ -202,7 +186,7 @@ export default function Dummy_dashboard() {
                           </th>
                         </tr>
                       </thead>
-                      <tbody id="table-data"></tbody>
+                      <tbody id="table-dataUser"></tbody>
                     </table>
                   </div>
                 </div>
@@ -211,6 +195,43 @@ export default function Dummy_dashboard() {
           </section>
         </li>
       </ul>
+
+      <footer
+          className="text-gray-600 body-font ml-3 mr-3"
+          style={{ backgroundColor: "#ededed" }}
+        >
+          <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+            <div className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
+              <img
+                style={{ width: "4rem", height: "4rem" }}
+                src={logo}
+                alt="Workflow"
+              />
+              <span className="ml-3 text-xl">OrphanAide</span>
+            </div>
+            <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+              © {new Date().getFullYear()} OrphanAide — India Charity
+              Registration Number: 1155123 | Registered with the Charities Aid
+              Foundation |
+              <a
+                href="https://www.termsandconditionsgenerator.com/live.php?token=TcZkfHf8Qh7ZlwPa7lPGMhHrN0wOnlMN"
+                className="text-gray-600 ml-1"
+                target="_blank"
+              >
+                Terms & Conditions
+              </a>{" "}
+              |
+              <a
+                href="https://www.freeprivacypolicy.com/live/a6ef4836-e951-4921-b707-464d7f2d2b03"
+                className="text-gray-600 ml-1"
+                target="_blank"
+              >
+                Privacy Policy
+              </a>
+            </p>
+          </div>
+        </footer>
+
     </>
   );
 }
