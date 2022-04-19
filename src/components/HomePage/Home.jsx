@@ -52,7 +52,7 @@ const Home = () => {
                     </a>
 
                     <a
-                      href="#"
+                      href="/team"
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 nav_button"
                       style={{ fontSize: "15px", letterSpacing: "3px" }}
                     >
@@ -145,7 +145,7 @@ const Home = () => {
                   </a>
 
                   <a
-                    href="#"
+                    href="/team"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
