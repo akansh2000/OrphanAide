@@ -38,6 +38,8 @@ const Home = () => {
         console.log('FAILED...', err);
       });
       
+      window.alert("Enquiry Sent!");
+
       setToSend({
         from_name: '',
         to_name: '',
@@ -196,7 +198,7 @@ const Home = () => {
                   </a>
 
                   <a
-                    href="/Login"
+                    href="/AskWhichUser"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 nav_button"
                     style={{ fontSize: "15px", letterSpacing: "3px" }}
                   >
