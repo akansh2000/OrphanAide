@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import {
     allUserDonationDetails,
-  } from "../Firebase";
+  } from "../../Firebase";
 export default function Dummy_dashboard() {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -193,17 +193,17 @@ export default function Dummy_dashboard() {
                                 <thead>
                                     <tr>
                                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Orphanage Name
+                                        User Name
                                     </th>
                                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Donated Amount
+                                        Total Amount Donated
                                     </th>
                                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Donation time
+                                        Latest Transaction Date 
                                     </th>
                                     </tr>
                                 </thead>
-                                <tbody id="table-data">
+                                <tbody id="table-dataUser">
         
                                 </tbody>
                                 </table>
