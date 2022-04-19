@@ -31,7 +31,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase(app);
 let users = [];
-let user_donation = [];
 
 export default function Dummy_dashboard() {
   const navigate = useNavigate();

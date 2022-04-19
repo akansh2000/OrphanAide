@@ -192,7 +192,7 @@ export default function SpecificOrphanage() {
                 </div>
                 <Link to="/Payment">
                 <div className="flex">
-                <span class="title-font font-medium text-2xl text-gray-900" id="donationrecieved">Donation Recieved: $58.00</span>
+                <span class="title-font font-medium text-2xl text-gray-900" id="donationrecieved">Donation Recieved: </span>
                 <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" id="Donate">Donate</button>
                 </div>
                 </Link>

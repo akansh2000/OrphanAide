@@ -10,6 +10,8 @@ import Home from "./components/HomePage/Home";
 import Mission from "./components/HomePage/Mission";
 import Support from "./components/HomePage/Support";
 import Program from "./components/HomePage/Program";
+import Team from "./components/HomePage/Team";
+import DonationReceipt from "./components/DonationReceipt/DonationReceipt";
 
 const Login = lazy(() => import("./components/Login/Login"));
 const Signup = lazy(() => import("./components/Signup/Signup"));
@@ -85,6 +87,8 @@ function App() {
             <Route exact path="/mission" element={<Mission />} />
             <Route exact path="/support" element={<Support />} />
             <Route exact path="/program" element={<Program />} />
+            <Route exact path="/team" element={<Team />} />
+            <Route exact path="/donate" element={<DonationReceipt />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
