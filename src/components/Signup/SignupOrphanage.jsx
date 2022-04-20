@@ -146,17 +146,6 @@ export default function SignupOrphanage() {
                   onChange={(event) => setAddress(event.target.value)}
                 />
               </div>
-              {/* <div className="pb-2 pt-4">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Orphanage State"
-                  className="block w-full p-4 text-lg rounded-sm bg-black"
-                  value={orpstate}
-                  required
-                  onChange={(event) => setOrphanageState(event.target.value)}
-                />
-              </div> */}
               <div className="pb-2 pt-4">
                 <input
                   type="search"

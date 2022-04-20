@@ -12,14 +12,14 @@ export default function Login() {
 
   const navigate = useNavigate();
 
+
+
   const handleLogin = (e) => {
     e.preventDefault();
     setLoaded(false);
-
-    HandleLoginFirebase(navigate, email, password);
-
-    setEmail("");
-    setPassword("");
+      HandleLoginFirebase(navigate, email, password);
+  setEmail("");
+   setPassword("");
   };
 
   return (

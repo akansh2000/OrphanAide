@@ -13,6 +13,11 @@ function update() {
     current_condition: "aiims",
     founded: "icon_ptv",
     founder: 27.0,
+    id: 0,
+    email: "",
+    password: "",
+    donation: 0,
+    imagelink: "",
   };
 
   let contact = [
@@ -423,6 +428,9 @@ function update() {
       founder: founder[i],
       donation: donations[i],
       imagelink: "",
+      id: "orp" + number_of_children[i],
+      email: "",
+      password: "",
     };
 
     // console.log(orphanage_data);
