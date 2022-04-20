@@ -70,6 +70,7 @@ const options = {
 const numberToFix = (number, fix) => (number || 0).toFixed(fix);
 
 const Graph = ({ info }) => {
+  console.log("Graph is " + info);
   const data = buildData(info);
 
   let maxval = 0;

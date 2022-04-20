@@ -11,41 +11,39 @@ import image4 from "../images/image4.jpg";
 import image6 from "../images/image6.jpg";
 import image5 from "../images/image5.jpeg";
 import { getOrphanageDataProfile } from "../../Firebase";
-import { send } from 'emailjs-com';
+import { send } from "emailjs-com";
 
 const Home = () => {
+  localStorage.removeItem("urlArr3");
+  localStorage.removeItem("urlArr2");
+  localStorage.removeItem("urlArr1");
   const [isOpen, setIsOpen] = useState(false);
 
   const [toSend, setToSend] = useState({
-    from_name: '',
-    to_name: '',
-    message: '',
-    reply_to: '',
+    from_name: "",
+    to_name: "",
+    message: "",
+    reply_to: "",
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    send(
-      'service_htvdgkr',
-      'template_k7fshh8',
-      toSend,
-      '7njiqsileUfeKGxNo'
-    )
+    send("service_htvdgkr", "template_k7fshh8", toSend, "7njiqsileUfeKGxNo")
       .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
+        console.log("SUCCESS!", response.status, response.text);
       })
       .catch((err) => {
-        console.log('FAILED...', err);
+        console.log("FAILED...", err);
       });
-      
-      window.alert("Enquiry Sent!");
 
-      setToSend({
-        from_name: '',
-        to_name: '',
-        message: '',
-        reply_to: '',
-      });
+    window.alert("Enquiry Sent!");
+
+    setToSend({
+      from_name: "",
+      to_name: "",
+      message: "",
+      reply_to: "",
+    });
   };
 
   const handleChange = (e) => {
@@ -456,7 +454,7 @@ const Home = () => {
                     EMAIL
                   </h2>
                   <a className="text-indigo-500 leading-relaxed">
-                  teamOA@OrphanAide.com
+                    teamOA@OrphanAide.com
                   </a>
                   <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs mt-4">
                     PHONE
@@ -480,52 +478,58 @@ const Home = () => {
                 below to submit an enquiry:
               </p>
               <form onSubmit={onSubmit}>
-              <div className="relative mb-4">
-                <label for="name" className="leading-7 text-sm text-gray-900">
-                  Name
-                </label>
-                <input
-                  type='text'
-                  name='from_name'
-                  value={toSend.from_name}
-                  onChange={handleChange}
-                  style={{ backgroundColor: "#f7f9f1" }}
-                  className="w-full rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                />
-              </div>
-              <div className="relative mb-4">
-                <label for="email" className="leading-7 text-sm text-gray-900">
-                  Email
-                </label>
-                <input
-                   type='text'
-                   name='reply_to'
-                   value={toSend.reply_to}
-                   onChange={handleChange}
-                  style={{ backgroundColor: "#f7f9f1" }}
-                  className="w-full rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                />
-              </div>
-              <div className="relative mb-4">
-                <label
-                  for="message"
-                  className="leading-7 text-sm text-gray-900"
+                <div className="relative mb-4">
+                  <label for="name" className="leading-7 text-sm text-gray-900">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="from_name"
+                    value={toSend.from_name}
+                    onChange={handleChange}
+                    style={{ backgroundColor: "#f7f9f1" }}
+                    className="w-full rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  />
+                </div>
+                <div className="relative mb-4">
+                  <label
+                    for="email"
+                    className="leading-7 text-sm text-gray-900"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="text"
+                    name="reply_to"
+                    value={toSend.reply_to}
+                    onChange={handleChange}
+                    style={{ backgroundColor: "#f7f9f1" }}
+                    className="w-full rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  />
+                </div>
+                <div className="relative mb-4">
+                  <label
+                    for="message"
+                    className="leading-7 text-sm text-gray-900"
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    type="text"
+                    name="message"
+                    value={toSend.message}
+                    onChange={handleChange}
+                    style={{ backgroundColor: "#f7f9f1" }}
+                    className="w-full rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
                 >
-                  Message
-                </label>
-                <textarea
-                   type='text'
-                   name='message'
-                   value={toSend.message}
-                   onChange={handleChange}
-                  style={{ backgroundColor: "#f7f9f1" }}
-                  className="w-full rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                ></textarea>
-              </div>
-              <button type='submit' className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                Send
-              </button>
-            </form>
+                  Send
+                </button>
+              </form>
             </div>
           </div>
         </section>

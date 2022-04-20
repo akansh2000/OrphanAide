@@ -3,6 +3,7 @@ import {
   loadDashboardOrphanage,
   loadUserProfile,
   chart_data,
+  getOrphanageDataProfile,
 } from "../Firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -31,6 +32,17 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase(app);
 let users = [];
+let orphanagesData = [];
+let arrDonationList = [];
+
+let dateArr = [];
+let chart_data_orphanage = [];
+let arr = [];
+let donations = [];
+
+let usernameArr = [];
+
+let chosenOrphanage = "";
 
 export default function Dummy_dashboard() {
   const navigate = useNavigate();
@@ -39,21 +51,98 @@ export default function Dummy_dashboard() {
   const [profile, setProfile] = useState(0);
   const [orphanage_profile, setOrphanageProfile] = useState(0);
   const [chartData, setData] = useState([]);
+  const [domain, setDomain] = useState("");
 
   const showOrphanages = () => {
     setOrphanages(1);
     setProfile(0);
+    setOrphanageProfile(0);
     loadDashboardOrphanage();
   };
 
   useEffect(() => {
     componentDidUpdate();
     loadDashboardOrphanage("", navigate);
-    const databaseRef_user = ref(db, "users/");
-    onValue(databaseRef_user, (snapshot) => {
-      const data = snapshot.val();
-      users = data;
-    });
+    if (localStorage.getItem("LogInAs") === "user") {
+      const databaseRef_user = ref(db, "users/");
+      onValue(databaseRef_user, (snapshot) => {
+        const data = snapshot.val();
+        users = data;
+        setDomain(
+          users[auth.currentUser.uid]["email"].substring(
+            users[auth.currentUser.uid]["email"].indexOf("@") + 1
+          )
+        );
+      });
+    } else {
+      const databaseRef_user = ref(db, "orphanage/");
+      onValue(databaseRef_user, (snapshot) => {
+        const data = snapshot.val();
+        let val = data.find(
+          (c) => localStorage.getItem("OrphanageId") === c.id
+        );
+        chosenOrphanage = val;
+        console.log(val);
+        orphanagesData = data;
+
+        const donationRef = ref(db, "donations/");
+        onValue(donationRef, (snapshot) => {
+          snapshot.forEach(function (childSnapshot) {
+            var childData = childSnapshot.val();
+            if (childData != null) {
+              for (let i = 1; i < childData.length; i++) {
+                if (childData[i].orphanage == val.name) {
+                  let obj = {
+                    amount: childData[i].amount,
+                    orphanage: childData[i].orphanage,
+                    time: childData[i].time,
+                    id: childSnapshot.key,
+                  };
+
+                  arr.push(obj);
+                }
+              }
+            }
+          });
+          chart_data_orphanage = {
+            chartData: {
+              labels: [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sept",
+                "Oct",
+                "Nov",
+                "Dec",
+              ],
+              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            },
+          };
+
+          setTimeout(function () {
+            // console.log(arr);
+
+            for (let i = 0; i < arr.length; i++) {
+              const date = new Date(arr[i].time);
+              var time = date.toLocaleString("en-US");
+              var month = time.split("/")[0];
+              var month_int = parseInt(month);
+              dateArr.push(month_int);
+            }
+            for (var i = 0; i < dateArr.length; i++) {
+              console.log(arr[i].amount);
+              chart_data_orphanage.chartData["data"][dateArr[i] - 1] +=
+                parseInt(arr[i].amount);
+            }
+          }, 4000);
+        });
+      });
+    }
   }, []);
 
   function componentDidUpdate() {
@@ -72,10 +161,80 @@ export default function Dummy_dashboard() {
   }
 
   function orphanageProfile() {
+    arrDonationList = [];
+    setTimeout(function () {
+      const container = document.getElementById("table-data-orphanage");
+      container.innerHTML = "";
+      let str1 = "";
+      const donationRef = ref(db, "donations/");
+      onValue(donationRef, (snapshot) => {
+        snapshot.forEach(function (childSnapshot) {
+          var childData = childSnapshot.val();
+          let obj = {
+            amount: 0,
+            time: 0,
+            id: childSnapshot.key,
+          };
+          for (let i = 1; i < childData.length; i++) {
+            // console.log(childData[i]);
+            if (childData[i].orphanage === chosenOrphanage.name) {
+              obj.amount += parseInt(childData[i].amount);
+              obj.time = childData[i].time;
+            }
+          }
+
+          arrDonationList.push(obj);
+        });
+
+        for (let idx = 0; idx < arrDonationList.length; idx++) {
+          const userRef = ref(db, "users/" + arrDonationList[idx].id);
+
+          onValue(userRef, (snapshot) => {
+            usernameArr.push(snapshot.val().name);
+          });
+        }
+
+        setTimeout(function () {
+          for (let idx = 0; idx < arrDonationList.length; idx++) {
+            if (arrDonationList[idx].amount > 0) {
+              const date = new Date(arrDonationList[idx].time);
+              str1 += `<tr>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <div class="flex items-center">
+                            <div class="ml-3">
+                              <p class="text-gray-900 whitespace-no-wrap">
+                                ${usernameArr[idx]}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                          ₹ ${arrDonationList[idx].amount}
+                          </p>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                          ${date.toDateString()}
+                          </p>
+                        </td>
+                      </tr>`;
+            }
+          }
+        }, 1500);
+
+        setTimeout(function () {
+          container.innerHTML = str1;
+        }, 2500);
+      });
+    }, 4000);
+
+    console.log(arrDonationList);
+    console.log(usernameArr);
+
     setOrphanages(0);
     setOrphanageProfile(1);
-    loadUserProfile();
-    setData(chart_data);
+    setData(chart_data_orphanage);
   }
 
   let states = [
@@ -375,7 +534,7 @@ export default function Dummy_dashboard() {
                   }}
                 >
                   <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
-                    Profile1
+                    Profile
                   </span>
                 </button>
               ) : (
@@ -394,7 +553,7 @@ export default function Dummy_dashboard() {
                   }}
                 >
                   <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
-                    Profile1
+                    Profile
                   </span>
                 </button>
               )}
@@ -538,6 +697,98 @@ export default function Dummy_dashboard() {
           </>
         ) : (
           ""
+        )}
+        {orphanage_profile == 1 ? (
+          <>
+            <section className="text-gray-600 body-font">
+              <div className="container px-5 py-24 mx-auto">
+                <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
+                  <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+                    Welcome, {chosenOrphanage.name}
+                  </h1>
+                  <p
+                    className="lg:w-1/2 w-full text-gray-500"
+                    style={{ textAlign: "justify" }}
+                  >
+                    We are so glad to have you as a donor on our platform, you
+                    are doing a great service for the poor people of our
+                    society. You are helping poor people with money and food to
+                    get them back on their feet. We hope that you continue such
+                    amazing work in the future.
+                  </p>
+                </div>
+                <div className="flex flex-wrap -m-4 ">
+                  <div
+                    className="xl:w-1/3 md:w-1 p-4 shadow-xl overflow-hidden rounded"
+                    style={{ height: "226px" }}
+                  >
+                    <div
+                      className="border border-gray-200 p-6 rounded-lg"
+                      style={{ height: "210px" }}
+                    >
+                      <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
+                        <FaUserAlt
+                          style={{ width: "1.5rem", height: "1.5rem" }}
+                        />
+                      </div>
+                      <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
+                        {chosenOrphanage.name}
+                      </h2>
+                      <p className="leading-relaxed text-base">
+                        Email: {chosenOrphanage.email}
+                      </p>
+                      <p className="leading-relaxed text-base">
+                        Phone: {chosenOrphanage.contact}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="xl:w-2/3 md:w-1 p-4">
+                    <Graph
+                      info={chart_data_orphanage}
+                      style={{ height: "194px" }}
+                    />
+                  </div>
+                </div>
+                <div
+                  className="bg-white p-8 rounded-md w-full my-auto"
+                  style={{ marginTop: "2rem" }}
+                >
+                  <div className=" flex items-center justify-between pb-6">
+                    <div>
+                      <h2 className="text-gray-600 font-semibold">
+                        Tabular Data
+                      </h2>
+                      <span className="text-xs">All donations till now</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                      <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                        <table className="min-w-full leading-normal">
+                          <thead>
+                            <tr>
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Donor Name
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Total Donated Amount
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Latest Donation Time
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody id="table-data-orphanage"></tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        ) : (
+          " "
         )}
       </div>
     </>

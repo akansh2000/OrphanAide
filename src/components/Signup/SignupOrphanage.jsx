@@ -11,15 +11,23 @@ export default function SignupOrphanage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeat, setRepeat] = useState("");
-  const [loaded, setLoaded] = useState(true);
+
   const navigate = useNavigate();
 
   const handleSignup = (e) => {
     e.preventDefault();
 
-    setLoaded(false);
-    HandleOrphanageSignupFirebase(navigate, orphanageID, email, password, name, address, orpstate, phone, repeat);
-    setLoaded(true);
+    HandleOrphanageSignupFirebase(
+      navigate,
+      orphanageID,
+      email,
+      password,
+      name,
+      address,
+      orpstate,
+      phone,
+      repeat
+    );
   };
 
   let states = [
@@ -56,7 +64,6 @@ export default function SignupOrphanage() {
   ];
 
   // const [state, setState] = useState("");
-
 
   return (
     <>
@@ -146,17 +153,6 @@ export default function SignupOrphanage() {
                   onChange={(event) => setAddress(event.target.value)}
                 />
               </div>
-              {/* <div className="pb-2 pt-4">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Orphanage State"
-                  className="block w-full p-4 text-lg rounded-sm bg-black"
-                  value={orpstate}
-                  required
-                  onChange={(event) => setOrphanageState(event.target.value)}
-                />
-              </div> */}
               <div className="pb-2 pt-4">
                 <input
                   type="search"
@@ -209,26 +205,12 @@ export default function SignupOrphanage() {
                 />
               </div>
               <div className="px-4 pb-2 pt-4">
-                {loaded ? (
-                  <button
-                    className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                    type="submit"
-                  >
-                    Register
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                  >
-                    <div className="text-center mx-auto">
-                      <div
-                        style={{ borderTopColor: "transparent" }}
-                        className="w-8 h-8 border-4 border-black-400 border-dotted rounded-full animate-spin text-center mx-auto"
-                      ></div>
-                    </div>
-                  </button>
-                )}
+                <button
+                  className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
+                  type="submit"
+                >
+                  Register
+                </button>
 
                 <div className="px-4 pb-2 pt-4 text-center text-lg">
                   <p>

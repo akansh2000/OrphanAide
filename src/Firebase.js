@@ -307,7 +307,7 @@ function getOrphanageDataProfile(name) {
           }
         }
       });
-      for (let i = 0; i < arr.length; i++) console.log("Arr\n" + arr[i].id);
+      for (let i = 0; i < arr.length; i++) console.log(arr[i]);
     });
   });
 }
@@ -715,7 +715,7 @@ function loadOrphanageTitle(id) {
   const reference = ref(db, "orphanage/" + id);
   onValue(reference, (snapshot) => {
     const data = snapshot.val();
-    console.log(data);
+    // console.log(data);
     let val = data;
     // console.log(orphanageName);
     // console.log(val.name);
@@ -737,25 +737,25 @@ function loadOrphanageTitle(id) {
     let donation = val.donation.toLocaleString("en-IN");
     donationrecieved.innerHTML = "Donation Recieved: ₹" + donation;
 
-    const storage = getStorage();
-    const pathReference = sRef(storage, val.name);
-    console.log(pathReference);
+    // const storage = getStorage();
+    // const pathReference = sRef(storage, val.name);
+    // console.log(pathReference);
 
-    listAll(pathReference)
-      .then((res) => {
-        res.prefixes.forEach((folderRef) => {
-          console.log("folder " + folderRef);
-        });
-        res.items.forEach((itemRef) => {
-          console.log("item " + itemRef);
-          getDownloadURL(itemRef).then((url) => {
-            const img = document.getElementById("imageOrphanage");
-            img.setAttribute("src", url);
-            // Insert url into an <img> tag to "download"
-          });
-        });
-      })
-      .catch((error) => {});
+    // listAll(pathReference)
+    //   .then((res) => {
+    //     res.prefixes.forEach((folderRef) => {
+    //       console.log("folder " + folderRef);
+    //     });
+    //     res.items.forEach((itemRef) => {
+    //       console.log("item " + itemRef);
+    //       getDownloadURL(itemRef).then((url) => {
+    //         const img = document.getElementById("imageOrphanage");
+    //         img.setAttribute("src", url);
+    //         // Insert url into an <img> tag to "download"
+    //       });
+    //     });
+    //   })
+    //   .catch((error) => {});
   });
 }
 
@@ -797,9 +797,7 @@ const HandleLoginFirebase = (navigate, email, password) => {
       .then((userCredential) => {
         // window.alert("Signed in!");
         console.log(auth.currentUser.accessToken);
-        if (!auth.currentUser.emailVerified) {
-          window.alert("Verify your email!");
-        } else {
+        if (email.substring(email.indexOf("@") + 1) === "OrphanAide.com") {
           set(ref(db, "token/" + auth.currentUser.uid), {
             token: auth.currentUser.accessToken,
           }).catch((error) => {
@@ -808,6 +806,19 @@ const HandleLoginFirebase = (navigate, email, password) => {
 
           //localStorage.setItem("Bearer", auth.currentUser.accessToken);
           navigate("/Dashboard");
+        } else {
+          if (!auth.currentUser.emailVerified) {
+            window.alert("Verify your email!");
+          } else {
+            set(ref(db, "token/" + auth.currentUser.uid), {
+              token: auth.currentUser.accessToken,
+            }).catch((error) => {
+              window.alert(error.message);
+            });
+
+            //localStorage.setItem("Bearer", auth.currentUser.accessToken);
+            navigate("/Dashboard");
+          }
         }
         // ...
       })
@@ -865,6 +876,7 @@ const HandleLoginFirebaseOrphanage = (navigate, id, email, password) => {
                 });
 
                 localStorage.setItem("Bearer", auth.currentUser.accessToken);
+                localStorage.setItem("OrphanageId", id);
                 navigate("/Dashboard");
               }
               // ...

@@ -3,21 +3,18 @@ import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import { update } from "../../automation";
 
-import { HandleLoginFirebase} from "../../Firebase";
+import { HandleLoginFirebase } from "../../Firebase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loaded, setLoaded] = useState(true);
 
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setLoaded(false);
 
     HandleLoginFirebase(navigate, email, password);
-
     setEmail("");
     setPassword("");
   };
@@ -97,27 +94,13 @@ export default function Login() {
                 <a href="/ForgotPassword">Forgot your password?</a>
               </div>
               <div className="px-4 pb-2 pt-4">
-                {loaded ? (
-                  <button
-                    type="submit"
-                    className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                    onClick={handleLogin}
-                  >
-                    Sign In
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                  >
-                    <div className="text-center mx-auto">
-                      <div
-                        style={{ borderTopColor: "transparent" }}
-                        className="w-8 h-8 border-4 border-black-400 border-dotted rounded-full animate-spin text-center mx-auto"
-                      ></div>
-                    </div>
-                  </button>
-                )}
+                <button
+                  type="submit"
+                  className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
+                  onClick={handleLogin}
+                >
+                  Sign In
+                </button>
               </div>
               <Link to="/Signup">
                 <div className="px-4 pb-2 pt-4">

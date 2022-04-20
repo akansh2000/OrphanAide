@@ -7,3 +7,7 @@ Rectify spinner on alert
 npm i react-chartjs-2
 npm i jspdf
 npm i styled-components
+npm i emailjs-com
+npm install @mui/icons-material
+npm install @emotion/react 
+npm install @emotion/styled

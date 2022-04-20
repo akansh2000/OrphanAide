@@ -8,13 +8,11 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeat, setRepeat] = useState("");
-  const [loaded, setLoaded] = useState(true);
   const navigate = useNavigate();
 
   const handleSignup = (e) => {
     e.preventDefault();
 
-    setLoaded(false);
     HandleSignupFirebase(navigate, email, password, name, phone, repeat);
   };
 
@@ -118,26 +116,12 @@ export default function Signup() {
                 />
               </div>
               <div className="px-4 pb-2 pt-4">
-                {loaded ? (
-                  <button
-                    className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                    type="submit"
-                  >
-                    Register
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
-                  >
-                    <div className="text-center mx-auto">
-                      <div
-                        style={{ borderTopColor: "transparent" }}
-                        className="w-8 h-8 border-4 border-black-400 border-dotted rounded-full animate-spin text-center mx-auto"
-                      ></div>
-                    </div>
-                  </button>
-                )}
+                <button
+                  className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none"
+                  type="submit"
+                >
+                  Register
+                </button>
 
                 <div className="px-4 pb-2 pt-4 text-center text-lg">
                   <p>
