@@ -256,7 +256,7 @@ const Team = () => {
                   <span className="inline-flex">
                     <a
                       className="ml-2 text-gray-500"
-                      href="ps827@snu.edu.in"
+                      href="mailto:ps827@snu.edu.in"
                       target="_blank"
                     >
                       <svg

@@ -162,13 +162,106 @@ function compare(a, b) {
   return 0;
 }
 
-function acceptOrphanage(id) {
-  let val = localStorage.getItem("AcceptRequest");
-  console.log(id);
+function acceptOrphanage(navigate, id) {
+  console.log("Accept" + id);
+  const reviewRef = ref(db, "review/");
+  let i = 0;
+  let obj = {};
+
+  onValue(reviewRef, (snapshot) => {
+    snapshot.forEach(function (childSnapshot) {
+      i++;
+      if (i == id) {
+        let refDelete = childSnapshot.ref.toString();
+        let idx = refDelete.indexOf("review/");
+        localStorage.setItem("idRef", refDelete.substring(idx));
+        obj = childSnapshot.val();
+        localStorage.setItem("removeObj", obj);
+      }
+    });
+  });
+
+  let len = 0;
+  let check = 0;
+  const orphanageRef = ref(db, "orphanage/");
+  onValue(orphanageRef, (snapshot) => {
+    // len = snapshot.val().length;
+    // snapshot.forEach(function (childSnapshot) {
+    //   console.log(childSnapshot.val().id);
+    //   let idReference = localStorage.getItem("idRef");
+    //   let checkID = idReference.substring(idReference.lastIndexOf("/") + 1);
+    //   console.log(checkID);
+    //   if (childSnapshot.val().id === checkID) {
+    //     console.log("Already exists!");
+    //     rejectOrphanage(id);
+    //     setTimeout(function () {
+    //       navigate("/ReviewRequests");
+    //       localStorage.removeItem("rejectState");
+    //     }, 7000);
+    //     return;
+    //   }
+    // });
+
+    if (Object.keys(obj).length != 0) {
+      check++;
+    }
+
+    if (check == 1) {
+      console.log(obj);
+      console.log(len + 1);
+
+      set(ref(db, "orphanage/" + len), obj);
+
+      createUserWithEmailAndPassword(auth, obj.email, obj.password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          sendEmailVerification(user).then(() => {
+            // Email verification sent!
+            let msg =
+              "An email verification link has been sent to " + user.email;
+            window.alert("msg" + msg);
+          });
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          window.alert("error" + errorMessage);
+        });
+    }
+  });
+
+  console.log(localStorage.getItem("removeObj"));
+
+  setTimeout(function () {
+    set(ref(db, localStorage.getItem("idRef")), null);
+  }, 5000);
 }
 
-function rejectOrphanage() {
-  console.log("reject");
+function rejectOrphanage(id) {
+  console.log("reject" + id);
+  const reviewRef = ref(db, "review/");
+  let i = 0;
+
+  onValue(reviewRef, (snapshot) => {
+    snapshot.forEach(function (childSnapshot) {
+      i++;
+      if (i == id) {
+        console.log(childSnapshot.ref.toString());
+        let refDelete = childSnapshot.ref.toString();
+        let idx = refDelete.indexOf("review/");
+        localStorage.setItem("idRef", refDelete.substring(idx));
+      }
+    });
+  });
+
+  let idRef = "";
+  setTimeout(function () {
+    idRef = localStorage.getItem("idRef");
+    console.log(idRef);
+  }, 5000);
+
+  setTimeout(function () {
+    set(ref(db, idRef), null);
+  }, 5000);
 }
 
 function loadReviewRequest() {
@@ -177,38 +270,38 @@ function loadReviewRequest() {
   let str1 = "";
   let i = 0;
   const reviewRef = ref(db, "review/");
-  onValue(reviewRef, (snapshot) => {
-    snapshot.forEach(function (childSnapshot) {
-      var childData = childSnapshot.val();
-
-      console.log(childData);
-      i++;
-      str1 += ` <tr class="text-gray-700">
-      <td class="px-4 py-3 border">
-        <div class="flex items-center text-sm">
-          <div>
-            <p>${childData.id}</p>
+  setTimeout(function () {
+    onValue(reviewRef, (snapshot) => {
+      snapshot.forEach(function (childSnapshot) {
+        var childData = childSnapshot.val();
+        // console.log(childData);
+        i++;
+        str1 += ` <tr class="text-gray-700">
+        <td class="px-4 py-3 border">
+          <div class="flex items-center text-sm">
+            <div>
+              <p>${childData.id}</p>
+            </div>
           </div>
-        </div>
-      </td>
-      <td class="px-4 py-3 border text-md ">${childData.name}</td>
-      <td class="px-4 py-3 border text-md ">${childData.email}</td>
-      <td class="px-4 py-3 border text-md ">${childData.address}</td>
-      <td class="px-4 py-3 border text-md ">${childData.state}</td>
-      <td class="px-4 py-3 border text-md ">${childData.phone}</td>
-      <td class="px-4 py-3 border text-sm">
-      <a href = "/acceptRequest" id = "${
-        childData.id
-      }" onClick={acceptOrphanage(e.target.id)} class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">Approve</a>
-      <a href = "/rejectRequest" id = "reject${i}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded" onclick="${localStorage.setItem(
-        "DenyRequest",
-        childData.id
-      )}">Deny</button>
-      </td>
-    </tr>`;
+        </td>
+        <td class="px-4 py-3 border text-md ">${childData.name}</td>
+        <td class="px-4 py-3 border text-md ">${childData.email}</td>
+        <td class="px-4 py-3 border text-md ">${childData.address}</td>
+        <td class="px-4 py-3 border text-md ">${childData.state}</td>
+        <td class="px-4 py-3 border text-md ">${childData.contact}</td>
+        <td class="px-4 py-3 border text-sm">
+        <a href = "/ReviewRequests" onClick="(function(){
+          localStorage.setItem('acceptState',${i});
+      })();" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">Approve</a>
+        <a href = "/ReviewRequests" onClick="(function(){
+          localStorage.setItem('rejectState',${i});
+      })();" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Deny</button>
+        </td>
+      </tr>`;
+      });
+      container.innerHTML = str1;
     });
-    container.innerHTML = str1;
-  });
+  }, 5000);
 }
 
 function allUserDonationDetails() {
@@ -227,7 +320,7 @@ function allUserDonationDetails() {
         id: childSnapshot.key,
       };
       for (let i = 1; i < childData.length; i++) {
-        console.log(childData[i]);
+        // console.log(childData[i]);
         obj.amount += parseInt(childData[i].amount);
         obj.time = childData[i].time;
       }
@@ -235,45 +328,50 @@ function allUserDonationDetails() {
       arr.push(obj);
     });
 
-    console.log(arr);
+    // console.log(arr);
     arr.sort(compare);
 
+    let usernameArr = [];
+
     for (let idx = 0; idx < arr.length; idx++) {
-      let username = "";
-      let str2 = "";
       const userRef = ref(db, "users/" + arr[idx].id);
 
       onValue(userRef, (snapshot) => {
-        username = snapshot.val().name;
-        str2 += username;
+        usernameArr.push(snapshot.val().name);
       });
-
-      console.log(str2);
-
-      const date = new Date(arr[idx].time);
-      str1 += `<tr>
-        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          <div class="flex items-center">
-            <div class="ml-3">
-              <p class="text-gray-900 whitespace-no-wrap">
-                ${str2}
-              </p>
-            </div>
-          </div>
-        </td>
-        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          <p class="text-gray-900 whitespace-no-wrap">
-          ₹ ${arr[idx].amount}
-          </p>
-        </td>
-        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          <p class="text-gray-900 whitespace-no-wrap">
-          ${date.toDateString()}
-          </p>
-        </td>
-      </tr>`;
     }
-    container.innerHTML = str1;
+
+    setTimeout(function () {
+      for (let idx = 0; idx < arr.length; idx++) {
+        console.log("hey");
+        const date = new Date(arr[idx].time);
+        str1 += `<tr>
+          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <div class="flex items-center">
+              <div class="ml-3">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  ${usernameArr[idx]}
+                </p>
+              </div>
+            </div>
+          </td>
+          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <p class="text-gray-900 whitespace-no-wrap">
+            ₹ ${arr[idx].amount}
+            </p>
+          </td>
+          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <p class="text-gray-900 whitespace-no-wrap">
+            ${date.toDateString()}
+            </p>
+          </td>
+        </tr>`;
+      }
+    }, 1500);
+
+    setTimeout(function () {
+      container.innerHTML = str1;
+    }, 2500);
   });
 
   console.log(arr);
@@ -319,10 +417,16 @@ function writeReviewData(id, address, orpstate, name, email, phone, password) {
     id: id,
     name: name,
     email: email,
-    phone: phone,
+    contact: phone,
     address: address,
     state: orpstate,
     password: password,
+    current_condition: "Not Yet Entered By Admin",
+    founded: 2001,
+    founder: "Larry Stocks",
+    donation: 0,
+    imagelink: "",
+    number_of_children: 23,
   }).catch((error) => {
     check = false;
     window.alert(error.message);
@@ -714,6 +818,7 @@ function loadOrphanageTitle(id) {
 
   const reference = ref(db, "orphanage/" + id);
   onValue(reference, (snapshot) => {
+    let arr = [];
     const data = snapshot.val();
     // console.log(data);
     let val = data;

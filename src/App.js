@@ -1,7 +1,7 @@
 //import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 
 import PrivateRoute from "./routes/privateRoute";
 import PublicRoute from "./routes/publicRoute";
@@ -31,9 +31,7 @@ const AllUsersDonation = lazy(() =>
   import("./components/AllUsersDonation/AllUsersDonation")
 );
 const LoginOrphanage = lazy(() => import("./components/Login/LoginOrphanage"));
-const AcceptRequest = lazy(() =>
-  import("./components/ReviewRequests/AcceptRequest")
-);
+
 const ForgotPassword = lazy(() =>
   import("./components/ForgotPassword/ForgotPassword")
 );
@@ -69,7 +67,6 @@ function App() {
               element={<AllUsersDonation />}
             />
             <Route exact path="/Thank" element={<Thank />} />
-            <Route exact path="/AcceptRequest" element={<AcceptRequest />} />
             <Route exact path="/ReviewRequests" element={<ReviewRequests />} />
             <Route exact path="/Payment" element={<Payment />} />
             <Route exact path="/Login" element={<Login />} />

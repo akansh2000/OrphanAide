@@ -274,7 +274,7 @@ export default function Payment() {
         </div>
     </section>
     <footer
-          className="text-gray-600 body-font ml-3 mr-3"
+          className="text-gray-600 body-font ml-3 mr-3 bottom-0"
           style={{ backgroundColor: "#ededed" }}
         >
           <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
