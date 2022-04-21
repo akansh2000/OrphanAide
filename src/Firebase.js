@@ -283,7 +283,7 @@ function loadReviewRequest() {
           <td class="px-4 py-3 border text-md ">${childData.address}</td>
           <td class="px-4 py-3 border text-md ">${childData.state}</td>
           <td class="px-4 py-3 border text-md ">${childData.contact}</td>
-          <td class="px-4 py-3 border text-sm">
+          <td class="px-4 py-3 border text-sm flex flex-wrap">
           <a href = "/Dashboard" onClick="(function(){
             localStorage.setItem('acceptState',${i});
         })();" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">Approve</a>
@@ -344,7 +344,7 @@ function allUserDonationDetails() {
         str1 += `<tr>
           <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
             <div class="flex items-center">
-              <div class="ml-3">
+              <div>
                 <p class="text-gray-900 whitespace-no-wrap">
                   ${usernameArr[idx]}
                 </p>

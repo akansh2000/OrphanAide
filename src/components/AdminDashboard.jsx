@@ -261,7 +261,7 @@ const AdminDashboard = () => {
           className="flex flex-col w-56 overflow-hidden ml-3"
           style={{ backgroundColor: "#1a1c23" }}
         >
-          <ul className="flex flex-col py-4">
+          <ul className="flex flex-col py-4" style={{ marginTop: "5rem" }}>
             <li>
               {orphanages == 1 ? (
                 <button
@@ -303,7 +303,7 @@ const AdminDashboard = () => {
                 </button>
               )}
             </li>
-            <li>
+            <li style={{ marginTop: "1rem" }}>
               {ReviewRequests == 1 ? (
                 <button
                   className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
@@ -345,7 +345,7 @@ const AdminDashboard = () => {
               )}
             </li>
 
-            <li>
+            <li style={{ marginTop: "1rem" }}>
               {donationData == 1 ? (
                 <button
                   className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
@@ -389,7 +389,7 @@ const AdminDashboard = () => {
               )}
             </li>
 
-            <li>
+            <li style={{ marginTop: "1rem" }}>
               <button
                 className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
                 style={{
@@ -427,18 +427,20 @@ const AdminDashboard = () => {
           <>
             <section className="text-gray-600 body-font w-full h-screen">
               <div className="bg-white p-8 rounded-md w-full h-screen">
-                <div className=" flex items-center justify-between pb-6 ">
-                  <div>
-                    <h2 className="text-gray-60 font-semibold">
-                      All Users' Donation
-                    </h2>
-                    <span className="text-xs">All donations till now</span>
-                  </div>
-                </div>
                 <div>
                   <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                     <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                      <table className="min-w-full leading-normal">
+                      <div className=" flex items-center justify-center text-center w-full">
+                        <div>
+                          <h1 className="text-gray-60 font-semibold text-xl">
+                            Users' Donations
+                          </h1>
+                          <span className="text-s">
+                            All donations through this platform till now
+                          </span>
+                        </div>
+                      </div>
+                      <table className="w-full mt-7">
                         <thead>
                           <tr>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -468,7 +470,10 @@ const AdminDashboard = () => {
             <section class="container mx-auto p-6 font-mono">
               <div class="w-full mb-8 rounded-lg shadow-lg">
                 <div class="w-full">
-                  <table class="w-full">
+                  <div className="w-full text-center text-lg">
+                    <h1>Orphanages Pending Requests</h1>
+                  </div>
+                  <table class="w-full mt-5">
                     <thead>
                       <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
                         <th class="px-4 py-3">ID</th>

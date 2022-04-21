@@ -435,7 +435,7 @@ export default function Dummy_dashboard() {
           className="flex flex-col w-56 overflow-hidden ml-3"
           style={{ backgroundColor: "#1a1c23" }}
         >
-          <ul className="flex flex-col py-4">
+          <ul className="flex flex-col py-4" style={{ marginTop: "5rem" }}>
             <li>
               {orphanages == 1 ? (
                 <button
@@ -477,7 +477,7 @@ export default function Dummy_dashboard() {
                 </button>
               )}
             </li>
-            <li>
+            <li style={{ marginTop: "1rem" }}>
               {localStorage.getItem("LogInAs") === "user" ? (
                 profile == 1 ? (
                   <button
@@ -562,7 +562,7 @@ export default function Dummy_dashboard() {
                 </button>
               )}
             </li>
-            <li>
+            <li style={{ marginTop: "1rem" }}>
               <Link to="/News" target="_blank">
                 <button
                   className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
@@ -579,7 +579,7 @@ export default function Dummy_dashboard() {
                 </button>
               </Link>
             </li>
-            <li>
+            <li style={{ marginTop: "1rem" }}>
               <button
                 className="flex flex-row items-center transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-100 hover:text-gray-800"
                 style={{
