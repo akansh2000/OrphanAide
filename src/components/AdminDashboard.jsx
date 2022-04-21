@@ -448,7 +448,7 @@ const AdminDashboard = () => {
                               Donated Amount
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                              Donation time
+                              Latest Donation Time
                             </th>
                           </tr>
                         </thead>
@@ -467,7 +467,7 @@ const AdminDashboard = () => {
           <>
             <section class="container mx-auto p-6 font-mono">
               <div class="w-full mb-8 rounded-lg shadow-lg">
-                <div class="w-full overflow-auto">
+                <div class="w-full">
                   <table class="w-full">
                     <thead>
                       <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">

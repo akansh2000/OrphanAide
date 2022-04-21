@@ -87,7 +87,7 @@ export default function Thank() {
           }
         });
       } else {
-        alert("User not found");
+        //  alert("User not found");
       }
     });
   }, []);

@@ -6,7 +6,6 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import AdminDashboard from "../components/AdminDashboard";
-import { Dashboard } from "@mui/icons-material";
 
 const firebaseConfig = {
   //.
