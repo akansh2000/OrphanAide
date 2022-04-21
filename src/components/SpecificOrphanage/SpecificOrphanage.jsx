@@ -17,7 +17,7 @@ import {
   listAll,
 } from "firebase/storage";
 import { getDatabase, ref, set, onValue } from "firebase/database";
-
+import defaultOrphanageImage from "../images/defaultOrphanageImage.png"
 const firebaseConfig = {
   //.
   apiKey: "AIzaSyCjepQRClsAeuzbjyQnkW8mYed1oOFbG-4",
@@ -56,12 +56,22 @@ export default function SpecificOrphanage() {
       let t = 0;
       listAll(pathReference)
         .then((res) => {
+          if(res.items.length == 0){
+            t++;
+            localStorage.setItem("urlArr1", defaultOrphanageImage);
+            localStorage.setItem("urlArr2", defaultOrphanageImage);
+            localStorage.setItem("urlArr3", defaultOrphanageImage);
+          }else{
+          console.log(res)
           res.items.forEach((itemRef) => {
-            getDownloadURL(itemRef).then((url) => {
-              t++;
-              localStorage.setItem("urlArr" + t, url);
-            });
+            console.log(itemRef)
+              getDownloadURL(itemRef).then((url) => {
+                t++;
+                localStorage.setItem("urlArr" + t, url);
+              });
+            
           });
+        }
         })
         .catch((error) => {});
     });
