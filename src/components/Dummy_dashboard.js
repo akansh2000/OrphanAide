@@ -161,11 +161,11 @@ export default function Dummy_dashboard() {
   }
 
   function orphanageProfile() {
-    arrDonationList = [];
     setTimeout(function () {
       const container = document.getElementById("table-data-orphanage");
       container.innerHTML = "";
       let str1 = "";
+      arrDonationList = [];
       const donationRef = ref(db, "donations/");
       onValue(donationRef, (snapshot) => {
         snapshot.forEach(function (childSnapshot) {
@@ -195,6 +195,7 @@ export default function Dummy_dashboard() {
         }
 
         setTimeout(function () {
+          console.log(arrDonationList.length);
           if (arrDonationList.length == 0) {
             str1 = `<div class="w-full" style="background-color: #f3f4f6;  text-align: center;"><h1 style="color: black; font-size: 18px; padding-bottom: 15px; padding-top: 1rem;">No pending review requests.</h1></div>`;
           } else {

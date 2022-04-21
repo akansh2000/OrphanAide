@@ -15,9 +15,10 @@ import {
   ref as sRef,
   getDownloadURL,
   listAll,
+  uploadBytes,
 } from "firebase/storage";
 import { getDatabase, ref, set, onValue } from "firebase/database";
-
+import defaultOrphanageImage from "./components/images/defaultOrphanageImage.png";
 const firebaseConfig = {
   //.
   apiKey: "AIzaSyCjepQRClsAeuzbjyQnkW8mYed1oOFbG-4",
@@ -164,6 +165,7 @@ function compare(a, b) {
 
 function acceptOrphanage(navigate, id) {
   console.log("Accept" + id);
+  const storage = getStorage();
   const reviewRef = ref(db, "review/");
   let i = 0;
   let obj = {};
@@ -186,21 +188,6 @@ function acceptOrphanage(navigate, id) {
   const orphanageRef = ref(db, "orphanage/");
   onValue(orphanageRef, (snapshot) => {
     len = snapshot.val().length;
-    // snapshot.forEach(function (childSnapshot) {
-    //   console.log(childSnapshot.val().id);
-    //   let idReference = localStorage.getItem("idRef");
-    //   let checkID = idReference.substring(idReference.lastIndexOf("/") + 1);
-    //   console.log(checkID);
-    //   if (childSnapshot.val().id === checkID) {
-    //     console.log("Already exists!");
-    //     rejectOrphanage(id);
-    //     setTimeout(function () {
-    //       navigate("/ReviewRequests");
-    //       localStorage.removeItem("rejectState");
-    //     }, 7000);
-    //     return;
-    //   }
-    // });
 
     if (Object.keys(obj).length != 0) {
       check++;
@@ -211,6 +198,8 @@ function acceptOrphanage(navigate, id) {
       console.log(len + 1);
 
       set(ref(db, "orphanage/" + len), obj);
+
+      // add image from here
 
       createUserWithEmailAndPassword(auth, obj.email, obj.password)
         .then((userCredential) => {
@@ -589,32 +578,64 @@ function loadDashboardOrphanage(state) {
         listAll(pathReference)
           .then((res) => {
             let itemRef = res.items[0];
-            getDownloadURL(itemRef).then((url) => {
+            console.log(data[idx].name + "  " + itemRef);
+            if (itemRef == undefined) {
               const card = document.createElement("div");
               card.classList = "card-body";
               const content2 = ` <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
                 <a class="block relative h-48 rounded overflow-hidden">
                   <img
                     alt="ecommerce"
-                    class="object-cover object-center w-full h-full block"
-                    src="${url}"
+                    class="object-cover object-center w-full h-full block mb-3"
+                    src="${defaultOrphanageImage}"
                   />
                 </a>
                 <a class="mt-4" href="/SpecificOrphanage" onClick="(function(){
                   localStorage.setItem('idOrphanage',${idx});
               })();">
-                  <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
+                  <h3 class="mt-4 text-gray-500 text-xs tracking-widest title-font mb-1">
                     Current Condition: ${data[idx].current_condition}
                   </h3>
                   <h2 class="text-gray-900 title-font text-lg font-medium">
                   ${data[idx].name}
                   </h2>
                   <p class="mt-1">${data[idx].address}</p>
+                  <p class="mt-1 font-bold">Founder: ${data[idx].founder}</p>
+                  <p class="mt-1 font-bold">Founded: ${data[idx].founded}</p>
                 </a>
               </div>`;
 
               container.innerHTML += content2;
-            });
+            } else {
+              getDownloadURL(itemRef).then((url) => {
+                const card = document.createElement("div");
+                card.classList = "card-body";
+                const content2 = ` <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
+                  <a class="block relative h-48 rounded overflow-hidden">
+                    <img
+                      alt="ecommerce"
+                      class="object-cover object-center w-full h-full block mb-3"
+                      src="${url}"
+                    />
+                  </a>
+                  <a class="mt-4" href="/SpecificOrphanage" onClick="(function(){
+                    localStorage.setItem('idOrphanage',${idx});
+                })();">
+                    <h3 class="mt-4 text-gray-500 text-xs tracking-widest title-font mb-1">
+                      Current Condition: ${data[idx].current_condition}
+                    </h3>
+                    <h2 class="text-gray-900 title-font text-lg font-medium">
+                    ${data[idx].name}
+                    </h2>
+                    <p class="mt-1">${data[idx].address}</p>
+                    <p class="mt-1 font-bold">Founder: ${data[idx].founder}</p>
+                    <p class="mt-1 font-bold">Founded: ${data[idx].founded}</p>
+                  </a>
+                </div>`;
+
+                container.innerHTML += content2;
+              });
+            }
           })
           .catch((error) => {});
       }
