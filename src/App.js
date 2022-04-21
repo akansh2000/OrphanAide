@@ -12,6 +12,7 @@ import Support from "./components/HomePage/Support";
 import Program from "./components/HomePage/Program";
 import Team from "./components/HomePage/Team";
 import DonationReceipt from "./components/DonationReceipt/DonationReceipt";
+import AdminDashboard from "./components/AdminDashboard";
 
 const Login = lazy(() => import("./components/Login/Login"));
 const Signup = lazy(() => import("./components/Signup/Signup"));
@@ -80,6 +81,9 @@ function App() {
             <Route exact path="/ForgotPassword" element={<ForgotPassword />} />
             <Route exact path="/Dashboard" element={<PrivateRoute />}>
               <Route exact path="/Dashboard" element={<Dashboard />} />
+            </Route>
+            <Route exact path="/Dashboard" element={<PrivateRoute />}>
+              <Route exact path="/Dashboard" element={<AdminDashboard />} />
             </Route>
             <Route exact path="/mission" element={<Mission />} />
             <Route exact path="/support" element={<Support />} />

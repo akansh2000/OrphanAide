@@ -102,10 +102,10 @@ const Graph = ({ info }) => {
             Donation Analysis
           </h2>
           <p className="leading-relaxed text-base">
-            Highest donation made: ₹{maxval}{" "}
+            Monthly Highest donation: ₹{maxval}{" "}
           </p>
           <p className="leading-relaxed text-base">
-            Total yearly donation made: ₹{total}{" "}
+            Total yearly donation: ₹{total}{" "}
           </p>
         </div>
       </div>
