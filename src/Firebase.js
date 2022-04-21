@@ -363,11 +363,11 @@ function allUserDonationDetails() {
           </td>
         </tr>`;
       }
-    }, 1500);
+    }, 3000);
 
     setTimeout(function () {
       container.innerHTML = str1;
-    }, 2500);
+    }, 4000);
   });
 
   console.log(arr);
@@ -667,10 +667,10 @@ function loadDashboardOrphanage(state) {
               const card = document.createElement("div");
               card.classList = "card-body";
               const content2 = ` <div class="lg:w-1/2 md:w-1 p-4 w-full">
-              <a class="block relative h-48 rounded overflow-hidden">
+              <a class="block relative h-48 rounded overflow-hidden mb-4">
                 <img
                   alt="ecommerce"
-                  class="object-cover object-center w-full h-full block"
+                  class="object-cover object-center w-full h-full block "
                   src="${url}"
                 />
               </a>
@@ -684,6 +684,8 @@ function loadDashboardOrphanage(state) {
                 ${fetchedOrphanage[idx].name}
                 </h2>
                 <p class="mt-1">${fetchedOrphanage[idx].address}</p>
+                <p class="mt-1 font-bold">Founder: ${data[idx].founder}</p>
+                <p class="mt-1 font-bold">Founded: ${data[idx].founded}</p>
               </a>
             </div>`;
 
@@ -996,7 +998,7 @@ const HandleLoginFirebaseOrphanage = (navigate, id, email, password) => {
           }
         });
       } else {
-        if (val.email === email && val.password === password) {
+        if (val.email == email && val.password == password && val.id == id) {
           signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
               // window.alert("Signed in!");
@@ -1021,7 +1023,11 @@ const HandleLoginFirebaseOrphanage = (navigate, id, email, password) => {
               window.alert(errorMessage);
             });
         } else {
-          alert("Incorrect Email or Password");
+          if (val.id != id) {
+            alert("You have not registered!");
+          } else {
+            alert("Incorrect Email or Password");
+          }
         }
       }
     });
