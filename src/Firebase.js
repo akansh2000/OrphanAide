@@ -185,7 +185,7 @@ function acceptOrphanage(navigate, id) {
   let check = 0;
   const orphanageRef = ref(db, "orphanage/");
   onValue(orphanageRef, (snapshot) => {
-    // len = snapshot.val().length;
+    len = snapshot.val().length;
     // snapshot.forEach(function (childSnapshot) {
     //   console.log(childSnapshot.val().id);
     //   let idReference = localStorage.getItem("idRef");
