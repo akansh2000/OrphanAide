@@ -195,30 +195,34 @@ export default function Dummy_dashboard() {
         }
 
         setTimeout(function () {
-          for (let idx = 0; idx < arrDonationList.length; idx++) {
-            if (arrDonationList[idx].amount > 0) {
-              const date = new Date(arrDonationList[idx].time);
-              str1 += `<tr>
-                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <div class="flex items-center">
-                            <div class="ml-3">
-                              <p class="text-gray-900 whitespace-no-wrap">
-                                ${usernameArr[idx]}
-                              </p>
+          if (arrDonationList.length == 0) {
+            str1 = `<div class="w-full" style="background-color: #f3f4f6;  text-align: center;"><h1 style="color: black; font-size: 18px; padding-bottom: 15px; padding-top: 1rem;">No pending review requests.</h1></div>`;
+          } else {
+            for (let idx = 0; idx < arrDonationList.length; idx++) {
+              if (arrDonationList[idx].amount > 0) {
+                const date = new Date(arrDonationList[idx].time);
+                str1 += `<tr>
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center">
+                              <div class="ml-3">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                  ${usernameArr[idx]}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p class="text-gray-900 whitespace-no-wrap">
-                          ₹ ${arrDonationList[idx].amount}
-                          </p>
-                        </td>
-                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p class="text-gray-900 whitespace-no-wrap">
-                          ${date.toDateString()}
-                          </p>
-                        </td>
-                      </tr>`;
+                          </td>
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap">
+                            ₹ ${arrDonationList[idx].amount}
+                            </p>
+                          </td>
+                          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap">
+                            ${date.toDateString()}
+                            </p>
+                          </td>
+                        </tr>`;
+              }
             }
           }
         }, 1500);
@@ -285,7 +289,6 @@ export default function Dummy_dashboard() {
               style={{
                 width: "100%",
                 justifyContent: "space-between",
-                marginLeft: "-5rem",
               }}
             >
               <div className="flex-shrink-0">
@@ -591,7 +594,7 @@ export default function Dummy_dashboard() {
                 }}
               >
                 <span style={{ fontSize: "15px", letterSpacing: "2px" }}>
-                  Logout
+                  Log Out
                 </span>
               </button>
             </li>

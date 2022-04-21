@@ -254,40 +254,47 @@ function rejectOrphanage(id) {
 }
 
 function loadReviewRequest() {
-  const container = document.getElementById("tableReviewRequest");
-  container.innerHTML = "";
-  let str1 = "";
-  let i = 0;
-  const reviewRef = ref(db, "review/");
   setTimeout(function () {
+    console.log("Inside load timer");
+    const container = document.getElementById("tableReviewRequest");
+    container.innerHTML = "";
+    let str1 = "";
+    let i = 0;
+    const reviewRef = ref(db, "review/");
     onValue(reviewRef, (snapshot) => {
-      snapshot.forEach(function (childSnapshot) {
-        var childData = childSnapshot.val();
-        // console.log(childData);
-        i++;
-        str1 += ` <tr class="text-gray-700">
-        <td class="px-4 py-3 border">
-          <div class="flex items-center text-sm">
-            <div>
-              <p>${childData.id}</p>
+      let data = snapshot.val();
+      if (data == null) {
+        str1 = `<div class="w-full" style="background-color: #f3f4f6;  text-align: center;"><h1 style="color: black; font-size: 18px; padding-bottom: 15px; padding-top: 1rem;">No pending review requests.</h1></div>`;
+      } else {
+        snapshot.forEach(function (childSnapshot) {
+          var childData = childSnapshot.val();
+          console.log(childData);
+          i++;
+          str1 += ` <tr class="text-gray-700">
+          <td class="px-4 py-3 border">
+            <div class="flex items-center text-sm">
+              <div>
+                <p>${childData.id}</p>
+              </div>
             </div>
-          </div>
-        </td>
-        <td class="px-4 py-3 border text-md ">${childData.name}</td>
-        <td class="px-4 py-3 border text-md ">${childData.email}</td>
-        <td class="px-4 py-3 border text-md ">${childData.address}</td>
-        <td class="px-4 py-3 border text-md ">${childData.state}</td>
-        <td class="px-4 py-3 border text-md ">${childData.contact}</td>
-        <td class="px-4 py-3 border text-sm">
-        <a href = "/ReviewRequests" onClick="(function(){
-          localStorage.setItem('acceptState',${i});
-      })();" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">Approve</a>
-        <a href = "/ReviewRequests" onClick="(function(){
-          localStorage.setItem('rejectState',${i});
-      })();" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Deny</button>
-        </td>
-      </tr>`;
-      });
+          </td>
+          <td class="px-4 py-3 border text-md ">${childData.name}</td>
+          <td class="px-4 py-3 border text-md ">${childData.email}</td>
+          <td class="px-4 py-3 border text-md ">${childData.address}</td>
+          <td class="px-4 py-3 border text-md ">${childData.state}</td>
+          <td class="px-4 py-3 border text-md ">${childData.contact}</td>
+          <td class="px-4 py-3 border text-sm">
+          <a href = "/Dashboard" onClick="(function(){
+            localStorage.setItem('acceptState',${i});
+        })();" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">Approve</a>
+          <a href = "/Dashboard" onClick="(function(){
+            localStorage.setItem('rejectState',${i});
+        })();" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Deny</button>
+          </td>
+        </tr>`;
+        });
+      }
+
       container.innerHTML = str1;
     });
   }, 5000);
@@ -922,7 +929,7 @@ const HandleLoginFirebase = (navigate, email, password) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // window.alert("Signed in!");
-        console.log(auth.currentUser.accessToken);
+        console.log(email.substring(email.indexOf("@") + 1));
         if (email.substring(email.indexOf("@") + 1) === "OrphanAide.com") {
           set(ref(db, "token/" + auth.currentUser.uid), {
             token: auth.currentUser.accessToken,
@@ -930,9 +937,10 @@ const HandleLoginFirebase = (navigate, email, password) => {
             window.alert(error.message);
           });
 
-          //localStorage.setItem("Bearer", auth.currentUser.accessToken);
+          localStorage.setItem("isAdmin", "yes");
           navigate("/Dashboard");
         } else {
+          localStorage.removeItem("isAdmin");
           if (!auth.currentUser.emailVerified) {
             window.alert("Verify your email!");
           } else {
@@ -943,6 +951,7 @@ const HandleLoginFirebase = (navigate, email, password) => {
             });
 
             //localStorage.setItem("Bearer", auth.currentUser.accessToken);
+            console.log("Inside normal");
             navigate("/Dashboard");
           }
         }
@@ -1084,6 +1093,7 @@ const Logout = (navigate) => {
       window.alert(error.message);
     });
     localStorage.removeItem("Bearer");
+    localStorage.removeItem("isAdmin");
   }
   navigate("/");
   signOut(auth);
